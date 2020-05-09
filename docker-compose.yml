@@ -1,0 +1,25 @@
+version: '2'
+services:
+  nginx:
+   container_name: my-nginx
+   image: nginx:latest
+   restart: always
+   ports:
+   - 80:80
+   - 443:443
+   volumes:
+   - ./nginx/conf.d:/etc/nginx/conf.d
+   - ./ssl:/ssl
+   links: 
+    - code-server:code-server_v1
+  code-server:
+    restart: always
+    image: codercom/code-server:latest
+    volumes:
+      - ./app:/home/coder/project
+    environment: 
+      - PASSWORD=511023.cc
+    user: root
+    ports: 
+     - 8089:8080
+     - 8090:8443

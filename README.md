@@ -11,3 +11,9 @@ docker build --name [image name] .
 ```
 docker run -it -d -gpus all -p 8080:80 -v app/:/root/code [image name]
 ```
+访问 http://localhost:8080 输入 `Dockerfile` 中配置的密码。登录code-server
+
+# 注意事项
++ 基础镜像来着nvidia 的 ![NGC](https://ngc.nvidia.com/setup) ,简单说就是需要到 NGC 注册才能够获取镜像下载权限，然后才能构建镜像。
++ 支持深度学习的镜像一般需要安装 ![nvidia-docker](https://github.com/NVIDIA/nvidia-docker)才能连接到宿主机的nvidia驱动
++ 目前的镜像需要硬件支持，nvidia 显卡驱动大于*440*

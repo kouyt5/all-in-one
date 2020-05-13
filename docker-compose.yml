@@ -1,17 +1,17 @@
-version: '2'
+version: '2.3'
 services:
-  nginx:
-   container_name: my-nginx
-   image: nginx:latest
-   restart: always
-   ports:
-   - 80:80
-   - 443:443
-   volumes:
-   - ./nginx/conf.d:/etc/nginx/conf.d
-   - ./ssl:/ssl
-   links: 
-    - code-server:code-server_v1
+#  nginx:
+#   container_name: my-nginx
+#   image: nginx:latest
+#   restart: always
+#   ports:
+#   - 6008:80
+#   - 443:443
+#   volumes:
+#   - ./nginx/conf.d:/etc/nginx/conf.d
+#   - ./ssl:/ssl
+#   links: 
+#    - code-server:code-server_v1
   code-server:
     restart: always
     image: codercom/code-server:latest
@@ -19,7 +19,9 @@ services:
       - ./app:/home/coder/project
     environment: 
       - PASSWORD=511023.cc
+      - NVIDIA_VISIBLE_DEVICES=all
     user: root
+    runtime: nvidia
     ports: 
-     - 8089:8080
-     - 8090:8443
+     - 6008:8080
+#     - 8090:8443

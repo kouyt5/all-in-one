@@ -14,14 +14,14 @@ services:
 #    - code-server:code-server_v1
   code-server:
     restart: always
-    image: codercom/code-server:latest
+    build: .
     volumes:
-      - ./app:/home/coder/project
+      - ./app:/root
     environment: 
-      - PASSWORD=511023.cc
+      - PASSWORD=511023
       - NVIDIA_VISIBLE_DEVICES=all
     user: root
     runtime: nvidia
     ports: 
-     - 6008:8080
+     - 6008:80
 #     - 8090:8443

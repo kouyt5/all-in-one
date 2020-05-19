@@ -1,0 +1,27 @@
+version: '2.3'
+services:
+#  nginx:
+#   container_name: my-nginx
+#   image: nginx:latest
+#   restart: always
+#   ports:
+#   - 6008:80
+#   - 443:443
+#   volumes:
+#   - ./nginx/conf.d:/etc/nginx/conf.d
+#   - ./ssl:/ssl
+#   links: 
+#    - code-server:code-server_v1
+  code-server:
+    restart: always
+    build: .
+    volumes:
+      - ./app:/root
+    environment: 
+      - PASSWORD=511023
+      - NVIDIA_VISIBLE_DEVICES=all
+    user: root
+    runtime: nvidia
+    ports: 
+     - 6008:80
+#     - 8090:8443

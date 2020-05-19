@@ -1,27 +1,36 @@
-version: '2.3'
+version: '2'
 services:
-#  nginx:
-#   container_name: my-nginx
-#   image: nginx:latest
-#   restart: always
-#   ports:
-#   - 6008:80
-#   - 443:443
-#   volumes:
-#   - ./nginx/conf.d:/etc/nginx/conf.d
-#   - ./ssl:/ssl
-#   links: 
-#    - code-server:code-server_v1
+  nginx:
+   container_name: my-nginx
+   image: nginx:latest
+   restart: always
+   ports:
+   - 80:80
+   - 443:443
+   volumes:
+   - ./nginx/conf.d:/etc/nginx/conf.d
+   - ./nginx/ssl:/ssl
+   links: 
+    - code-server:code-server_v1
+    - jupyter:jupyter_v1
   code-server:
     restart: always
-    build: .
+    # image: codercom/code-server:3.2.0
+    build: code-server/
     volumes:
-      - ./app:/root
+      - ./app/code-server:/home/coder/project
+      - ./speedup/apt-debain10.list:/etc/apt/sources.list
+      - ./speedup/pip.conf:/root/.pip/pip.conf # 镜像源加速
     environment: 
-      - PASSWORD=511023
-      - NVIDIA_VISIBLE_DEVICES=all
+      - PASSWORD=511023.cc
     user: root
-    runtime: nvidia
+    # ports: 
+    #  - 8089:8080
+    #  - 8090:8443
+  jupyter:
+    build: ./jupyter/
+    restart: always
+    volumes: 
+      - ./app/juypter:/workdir
     ports: 
-     - 6008:80
-#     - 8090:8443
+      - 8889:8888

@@ -1,25 +1,40 @@
-# code-server-docker
-docker-compose 部署nginx与code-server
-# 当前工作
-之前想使用nginx代理计算机上所有开放端口，但是在使用过程中发现code-server的不能正常代理（能够访问登录页面但是无法进入code）后面思考，code-server的应用场景不是随时启动，重新部署也对应用无影响的场景，需要持续使用容器环境，一旦重新构建，所有环境需要重新搭建，显然不符合需求。虽然代码可以保存，但是根据需求安装的环境却是随着镜像的重构而重构。 ~~所以只能使用Dockerfile预构建满足深度学习的pytorch镜像。不适用docker-compose方式。~~ docker-compose中可以复用容器，只要不指定--build参数。使用docker-compose有更多的优势，启动更加简单。
-# 启动方式
-## 使用Dockerfile
-预先构建镜像
-```bash
-docker build --name [image name] .
+# all-in-one
+目前就取个这个名字吧，意味着所有的东西都在一个平台上管理。
+## 解决问题是什么？
+遇到一件系统性的麻烦事。就是在计算机刚开始使用时候，搭建各种各样的服务，因为搬砖需要，也会搭建各种代码的运行环境，然而，经常是这个环境用一段时间就搁置在那里了，很久之后就搞忘了环境到底安装了什么东西？当然这不是致命的，因为可以重新创建环境就行，然而如果在电脑上安装了很多服务，例如ftp、mysql等，大部分服务需要修改配置文件，如果很久时间不碰了，很难记清楚搭建的步骤、到底在哪里修改了什么文件等等等等，当然，如果比较勤快的话可以做一个记录，每一步的操作都记下来，可这种低级的事情真不想做，首先如果细节比较多的话非常麻烦，而且很容易漏忘什么东西。当然你可以说我比较细致，这些no problem，然而如果你的电脑崩了呢，按照记录的教程一步步搭建将会非常麻烦，你可以说我不怕麻烦，但是如果你的电脑拿给别人用呢，别人也看你的教程么，也可以，但不专业，很麻烦。（注意：这些麻烦事都是在服务器上，自己用的笔记本应该不需要安装各种服务）
+
+## 解决方案
+前段时间一直在使用了解 `docker`，docker 可以使得环境完全可视化，只要按照规矩来，不要在容器内直接操作环境，那么就能保证环境的可复现性。d但只使用docker只能作为环境隔离工具，达不到管理需求，因此准备使用 `k8s` 为计算机搭建一个电脑资源可视化的平台，管理所有的应用或者服务。因此，对于开发来说，将导致所有的代码将运行在docker之上，这个方案经过验证是可行的。然后是其他的服务也使用docker创建，现在docker比较成熟，各种应用几乎都包含 docker，也具有可行性，当然，可能按照自己的意愿搭建一个个服务有些困难需要克服，但是我们可以一步步学习嘛，总能解决的。
+
+安装 `jupyter` 的时候意外看到一个网站，https://www.kubeflow.org/ ，这个`Kubeflow` 的想法跟我要做的事情比较像，管理机器学习应用，不过这是生产级别的，运行在k8s之上，对模型的生命周期做了一个管理。 后期可以尝试应用。但留给我的时间不多了，哎~
+
+之前也听说过 `nginx` 反向代理，代理http应用，想着就可以结合`code-server` 在网页上开发，岂不是美滋滋。使用nginx还可以节约端口，不需要在计算机上另开一个端口，就不用设置内网穿透了，还得记住端口，久了也要搞忘。 nginx 配置还是踩了很多坑，看来自己的能力还是真的撑不起自己的野心。
+
+总结一下，目前需要安装的服务：
++ `docker` ,`docker-compose` 这两个是基本的应用，安装在宿主机
++ `jupyter lab` 一个专门用来科学计算的工具
++ `nginx` 服务器 作为所有服务的代理
++ `code-server` 一个网页上运行的 `vscode`
+
+后续将会不断完善。
+## 当前工作
++ 使用 `docker-compose` 集成多个应用，包括nginx、code-server、jupyter lab
+
+文件夹含义：
 ```
-创建永久运行的容器
+|-- app                 # 每个应用的需要储存的文件
+|   |-- code-server
+|   `-- juypter
+|-- code-server         # code-server 服务
+|-- docker-compose.yml  # docker-compose文件
+|-- jupyter             # jupyter 配置
+|-- lonely-app          # 单体应用，不包含到集群
+|   `-- code-server
+|-- nginx               # nginx代理配置
+|   |-- conf.d
+|   `-- ssl
+`-- speedup             # 加速源
 ```
-docker run -it -d -gpus all -p 8080:80 -v app/:/root/code [image name]
-```
-访问 http://localhost:8080 输入 `Dockerfile` 中配置的密码。登录code-server
-## 使用docker-compose
-直接在根目录下输入如下命令
-```bash
-docker-compose up -d
-```
-就能永久启动一个服务，具体参数配置详见docker-compose.yml文件
-# 注意事项
-+ 基础镜像来着nvidia 的 [NGC](https://ngc.nvidia.com/setup) ,简单说就是需要到 NGC 注册才能够获取镜像下载权限，然后才能构建镜像。
-+ 支持深度学习的镜像一般需要安装 [nvidia-docker](https://github.com/NVIDIA/nvidia-docker)才能连接到宿主机的nvidia驱动
-+ 目前的镜像需要硬件支持，nvidia 显卡驱动大于*440*
+
+## bug
+java安装完成，但运行始终报错 `/root/.local/share/code-server/extensions/redhat.java` 说是无法makedir。解决方案是清理一下Java language server workspace ，或者删掉一些项目无关的文件，重启界面。

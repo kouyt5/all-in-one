@@ -21,6 +21,7 @@ services:
       - ./app/code-server:/home/coder/project
       - ./speedup/apt-debain10.list:/etc/apt/sources.list
       - ./speedup/pip.conf:/root/.pip/pip.conf # 镜像源加速
+      - db_code-server:/root/.local/share/code-server
     environment: 
       - PASSWORD=511023.cc
     user: root
@@ -31,6 +32,12 @@ services:
     build: ./jupyter/
     restart: always
     volumes: 
-      - ./app/juypter:/workdir
+      - ./app/juypter/workdir:/workdir
+      - db_jupyter:/opt/conda/share/jupyter/lab # Application directory, 命令:jupyter lab path
+      - ./app/juypter/lab:/home/jovyan/.jupyter/lab # User Settings directory
     ports: 
       - 8889:8888
+    user: root
+volumes: 
+  db_code-server: {}
+  db_jupyter: {}

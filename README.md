@@ -38,3 +38,8 @@
 
 ## bug
 java安装完成，但运行始终报错 `/root/.local/share/code-server/extensions/redhat.java` 说是无法makedir。解决方案是清理一下Java language server workspace ，或者删掉一些项目无关的文件，重启界面。
+## 常用命令
+清理docker无用容器或镜像
+```
+docker system prune
+```

@@ -1,3 +1,5 @@
 ssl/
 app/*
 private.txt
+workdir/
+webapp/

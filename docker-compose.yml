@@ -10,6 +10,9 @@ services:
    volumes:
    - ./nginx/conf.d:/etc/nginx/conf.d
    - ./nginx/ssl:/ssl
+   - ./nginx/index.html:/home/www/index.html
+   - ./app/files:/home/www # 挂载的时候注意先赋予本地挂载目录777权限
+   - ./lonely-app/ftp/workdir/ftp:/home/www/files/win-ftp 
    links: 
     - code-server:code-server_v1
     - jupyter:jupyter_v1
@@ -35,6 +38,7 @@ services:
       - ./app/juypter/workdir:/workdir
       - db_jupyter:/opt/conda/share/jupyter/lab # Application directory, 命令:jupyter lab path
       - ./app/juypter/lab:/home/jovyan/.jupyter/lab # User Settings directory
+      - ./speedup/pip.conf:/home/jovyan/.pip/pip.conf # 镜像源加速
     ports: 
       - 8889:8888
     user: root

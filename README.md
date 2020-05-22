@@ -37,7 +37,8 @@
 ```
 
 ## bug
-java安装完成，但运行始终报错 `/root/.local/share/code-server/extensions/redhat.java` 说是无法makedir。解决方案是清理一下Java language server workspace ，或者删掉一些项目无关的文件，重启界面。
+1. java安装完成，但运行始终报错 `/root/.local/share/code-server/extensions/redhat.java` 说是无法makedir。解决方案是清理一下Java language server workspace ，或者删掉一些项目无关的文件，重启界面。
+2. 权限问题，很多容器启动其中的服务使用非root用户，导致在docker-compose.tml 中默认的root用户创建的目录无写入权限，可以挂载到服务启动用户的用户目录规避这个问题，也可以更改挂载目录权限。
 ## 常用命令
 清理docker无用容器或镜像
 ```

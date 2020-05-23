@@ -9,11 +9,11 @@ services:
    - 443:443
    volumes:
    - ./nginx/conf.d:/etc/nginx/conf.d
-   - ./nginx/ssl:/ssl
+   - ./nginx/ssl:/ssl # 挂载ssl证书
    - ./nginx/web/index.html:/home/www/index.html
    - ./nginx/web/404:/home/404
    - ./app/www:/home/www # 挂载的时候注意先赋予本地挂载目录777权限
-   - ./lonely-app/ftp/workdir/ftp:/home/www/files/win-ftp 
+   - ./lonely-app/ftp/workdir/ftp:/home/www/files/win-ftp # 挂载ftp目录
    links: 
     - code-server:code-server_v1
     - jupyter:jupyter_v1
@@ -27,7 +27,7 @@ services:
       - ./speedup/pip.conf:/root/.pip/pip.conf # 镜像源加速
       - db_code-server:/root/.local/share/code-server
     environment: 
-      - PASSWORD=511023.cc
+      - PASSWORD=511023 # code-server登录密码
     user: root
     # ports: 
     #  - 8089:8080

@@ -1,0 +1,99 @@
+body {
+    color: #444;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: center;
+    width: 100%
+}
+
+div.figure {
+    margin: 40px 0 0;
+    padding: 0
+}
+
+div.figure img {
+    height: auto;
+    max-width: 100%
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    div.figure img {
+        width: 80%
+    }
+}
+
+#errorbox {
+    line-height: 1.6em;
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 0 20px;
+    text-align: left;
+    word-wrap: break-word
+}
+
+#errorbox a {
+    color: #005ff8;
+    text-decoration: none
+}
+
+#errorbox h1 {
+    color: #222;
+    font-size: 1.5em;
+    font-weight: normal;
+    margin: 10px 0
+}
+
+#errorbox .not-found {
+    color: rgba(0, 0, 0, 0.75);
+    font-size: 21px;
+    font-weight: lighter;
+    line-height: 36px;
+    text-align: center
+}
+
+#errorbox .not-found h1 {
+    color: rgba(0, 0, 0, 0.75);
+    font-size: 38px;
+    font-weight: lighter;
+    line-height: 47px
+}
+
+#errorbox .not-found--links {
+    margin: 48px 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px
+}
+
+#errorbox .not-found--links ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none
+}
+
+#errorbox .not-found--links ul li {
+    margin-top: 10px
+}
+
+#errorbox .not-found--links ul li a:hover {
+    text-decoration: underline
+}
+
+#errorbox .public-folder-404 {
+    -webkit-font-smoothing: antialiased;
+    text-align: center;
+    padding-bottom: 100px
+}
+
+#errorbox .public-folder-404 .public-folder-link {
+    color: white
+}
+
+#errorbox .public-folder-404 .error_message {
+    margin-top: -50px
+}
+
+#errorbox .public-folder-404 .message_body {
+    width: 80%;
+    margin: auto
+}

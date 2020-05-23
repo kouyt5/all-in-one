@@ -10,8 +10,9 @@ services:
    volumes:
    - ./nginx/conf.d:/etc/nginx/conf.d
    - ./nginx/ssl:/ssl
-   - ./nginx/index.html:/home/www/index.html
-   - ./app/files:/home/www # 挂载的时候注意先赋予本地挂载目录777权限
+   - ./nginx/web/index.html:/home/www/index.html
+   - ./nginx/web/404:/home/404
+   - ./app/www:/home/www # 挂载的时候注意先赋予本地挂载目录777权限
    - ./lonely-app/ftp/workdir/ftp:/home/www/files/win-ftp 
    links: 
     - code-server:code-server_v1

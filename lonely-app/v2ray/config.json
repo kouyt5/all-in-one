@@ -1,0 +1,84 @@
+{
+    "inbounds": [{
+      "port": 1080,
+      "listen":"0.0.0.0",
+      "protocol": "http",
+      "settings": {
+        "tcp":true
+      }
+    }],
+    "outbounds": [{
+           "tag": "proxy",
+           "protocol": "vmess",
+          "settings": {
+                  "vnext": [{
+                      "address": "cdn.tcpbbr.net",
+                      "port": 443,
+                      "users": [{
+                              "id": "217aab44-8faf-1b4d-8587-d0ea0e930b94",
+                              "alterId": 0,
+                              "email": "t@t.tt",
+                              "security": "auto"
+                      }]
+                  }],
+                  "servers": null,
+                  "response": null
+          },
+          "streamSettings": {
+                  "network": "ws",
+                  "security": "tls",
+                  "tlsSettings": {
+                          "allowInsecure": true,
+                          "serverName": "cdn.tcpbbr.net"
+                  },
+                  "tcpSettings": null,
+                  "kcpSettings": null,
+                  "wsSettings": {
+                          "connectionReuse": true,
+                          "path": "/cnus",
+                          "headers": {
+                                  "Host": "cdn.tcpbbr.net"
+                          }
+                  },
+                  "httpSettings": null,
+                  "quicSettings": null
+          },
+          "mux": {
+                  "enabled": true
+          }
+    },
+    {
+            "tag": "direct",
+            "protocol": "freedom",
+            "settings": {
+                    "vnext": null,
+                    "servers": null,
+                    "response": null
+            },
+            "streamSettings": null,
+            "mux": null
+    },
+    {
+            "tag": "block",
+            "protocol": "blackhole",
+            "settings": {
+                    "vnext": null,
+                    "servers": null,
+                    "response": {
+                            "type": "http"
+                    }
+            },
+            "streamSettings": null,
+            "mux": null
+    }],
+    "routing": {
+      "domainStrategy": "IPOnDemand",
+      "rules": [
+        {
+          "type": "field",
+          "ip": ["geoip:private"],
+          "outboundTag": "direct"
+        }
+      ]
+    }
+  }

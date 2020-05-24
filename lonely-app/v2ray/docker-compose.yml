@@ -1,0 +1,9 @@
+version: '2.3'
+services:
+    v2ray:
+        restart: always
+        image: v2ray/official:latest
+        volumes:
+            - ./config.json:/etc/v2ray/config.json
+        ports: # 端口较小时需要用引号，不然无效
+            - "1080:1080"

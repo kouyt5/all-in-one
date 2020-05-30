@@ -17,6 +17,7 @@ services:
    links: 
     - code-server:code-server_v1
     - jupyter:jupyter_v1
+    - portainer:portainer_v1
   code-server:
     restart: always
     # image: codercom/code-server:3.2.0
@@ -29,6 +30,8 @@ services:
     environment: 
       - PASSWORD=511023 # code-server登录密码
     user: root
+    links: 
+    - jupyter:jupyter_v1
     # ports: 
     #  - 8089:8080
     #  - 8090:8443
@@ -40,9 +43,22 @@ services:
       - db_jupyter:/opt/conda/share/jupyter/lab # Application directory, 命令:jupyter lab path
       - ./app/juypter/lab:/home/jovyan/.jupyter/lab # User Settings directory
       - ./speedup/pip.conf:/home/jovyan/.pip/pip.conf # 镜像源加速
-    ports: 
-      - 8889:8888
     user: root
+    # ports: 
+    #   - 8889:8888
+  portainer:
+    image: portainer/portainer
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    ports:
+      - 9000:9000
+      - 8000:8000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+
 volumes: 
   db_code-server: {}
   db_jupyter: {}
+  portainer_data: {}

@@ -1,0 +1,11 @@
+version: '2.3'
+services:
+    v2ray:
+        restart: always
+        image: bitwardenrs/server:latest
+        volumes:
+            - bw-data:/data/
+        ports: # 端口较小时需要用引号，不然无效
+            - "80:80"
+volumes: 
+    bw-data: {}

@@ -18,6 +18,7 @@ services:
     - code-server:code-server_v1
     - jupyter:jupyter_v1
     - portainer:portainer_v1
+    - bitwardenrs:bitwardenrs_v1
   code-server:
     restart: always
     # image: codercom/code-server:3.2.0
@@ -27,6 +28,7 @@ services:
       - ./speedup/apt-debain10.list:/etc/apt/sources.list
       - ./speedup/pip.conf:/root/.pip/pip.conf # 镜像源加速
       - db_code-server:/root/.local/share/code-server
+      - python_package:/usr/local/lib/python3.7/dist-packages
     environment: 
       - PASSWORD=511023 # code-server登录密码
     user: root
@@ -56,9 +58,15 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
-
+  bitwardenrs: # 密码管理
+    restart: always
+    image: bitwardenrs/server:latest
+    volumes:
+      - bw-data:/data/
 
 volumes: 
   db_code-server: {}
   db_jupyter: {}
   portainer_data: {}
+  bw-data: {}
+  python_package: {}

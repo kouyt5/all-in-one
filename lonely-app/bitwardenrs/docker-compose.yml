@@ -1,6 +1,6 @@
 version: '2.3'
 services:
-    v2ray:
+    bitwardenrs:
         restart: always
         image: bitwardenrs/server:latest
         volumes:

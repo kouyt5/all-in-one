@@ -17,11 +17,13 @@
 + `ftp` 服务器，用于文件本地上传，再使用 `nginx` 作为文件查看服务器，这样做的原因是 http 可以直接在线查看pdf，ftp不行。
 + `v2ray` 翻墙代理服务器设置
 + `tomcat` 支持(暂时未部署应用,经验证可行)
++ `portainer` 容器管理平台
++ `bitwarden` 个人密码管理
 
 后续将会不断完善。
 ## 安装步骤
-环境支持：
-+ `docker` ,`docker-compose` 这两个是基本的应用，安装在宿主机
+环境依赖：（注意，计算机上只需要安装这两个应用，然后所有服务都不需要其他的任何配置，这就是docker的强大之处）
++ `docker` ,`docker-compose` 这两个是基本的应用，安装在宿主机，安装步骤自行百度或者官网 https://docs.docker.com/engine/install/ubuntu/
 
 **0**. clone 代码。因为nginx默认开启ssl，因此需要自行根据需求，把ssl的关键文件放入 nginx 目录下，如
 ```
@@ -43,7 +45,7 @@ nginx/ssl/
 然后打开浏览器，输入 `http://ip/` 就可以访问到主页。
 ## 当前工作
 + 使用 `docker-compose` 集成多个应用，包括nginx代理、code-server、jupyter lab、nginx文件服务器。
-+ 搭建了tomcat、机器学习code-server、ftp服务器的单体应用。
++ 搭建了tomcat、机器学习code-server、ftp服务器等单体应用。
 
 文件夹含义：
 ```
@@ -69,7 +71,7 @@ nginx/ssl/
 
 ## bug
 1. java安装完成，但运行始终报错 `/root/.local/share/code-server/extensions/redhat.java` 说是无法makedir。解决方案是清理一下Java language server workspace ，或者删掉一些项目无关的文件，重启界面。
-2. 权限问题，很多容器启动其中的服务使用非root用户，导致在docker-compose.tml 中默认的root用户创建的目录无写入权限，可以挂载到服务启动用户的用户目录规避这个问题，也可以更改挂载目录权限。
+2. 权限问题，很多容器启动其中的服务使用非root用户，导致在docker-compose.yml 中默认的root用户创建的目录无写入权限，可以挂载到服务启动用户的用户目录规避这个问题，也可以更改挂载目录权限。
 ## 常用命令
 清理docker无用容器或镜像
 ```

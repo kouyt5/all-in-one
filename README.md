@@ -15,7 +15,7 @@
 + `nginx` 服务器 作为所有服务的代理
 + `code-server` 一个网页上运行的 `vscode`
 + `ftp` 服务器，用于文件本地上传，再使用 `nginx` 作为文件查看服务器，这样做的原因是 http 可以直接在线查看pdf，ftp不行。
-+ `v2ray` 翻墙代理服务器设置
++ `v2ray` 翻墙**代理**服务器设置（非VPN，需要预先有国外服务器或第三方服务，详情见 [lonely-app/v2ray/README.md](lonely-app/v2ray/README.md) ）
 + `tomcat` 支持(暂时未部署应用,经验证可行)
 + `portainer` 容器管理平台
 + `bitwarden` 个人密码管理
@@ -25,6 +25,8 @@
 环境依赖：（注意，计算机上只需要安装这两个应用，然后所有服务都不需要其他的任何配置，这就是docker的强大之处）
 + `docker` ,`docker-compose` 这两个是基本的应用，安装在宿主机，安装步骤自行百度或者官网 https://docs.docker.com/engine/install/ubuntu/
 
+启动步骤(在华为云服务器上部署(2核4G))
+
 **0**. clone 代码。因为nginx默认开启ssl，因此需要自行根据需求，把ssl的关键文件放入 nginx 目录下，如
 ```
 # 免费 ssl 证书申请 https://freessl.cn/
@@ -32,20 +34,20 @@ nginx/ssl/
 ├── full_chain.pem
 └── private.key
 ```
-如果没有，注释掉 nginx/conf.d/default.conf 文件中关于ssl的部分。
+如果没有证书，注释掉 nginx/conf.d/default.conf 文件中关于ssl的部分。
 
 **1**. jupyter 和 code-server 都需要配置密码，jupyter 的密码配置在jupyter/Dockerfile 中，code-server 在docker-compose.yml 中。jupyter 的配置请看 jupyter 目录下的 [jupyter/README.md](jupyter/README.md) 文件。当然你可以忽略掉密码配置部分，但这两个服务都必须输入密码登录的，可以后面回过头再看。nginx默认监听80端口，所以请确保80端口对外开放。
 
 **2**. 在一台裸机上安装 docker,docker-compose 两个 docker 环境运行基础
 
-**3**. 进入项目根目录，输入`docker-compose up` 就可以直接启动nginx关联服务（关键）
+**3**. 进入项目根目录，输入`docker-compose up` 就可以直接启动nginx关联服务（包括jupyter、codlab、nginx）
 
-**4**. 根据需求，到 lonely-app 目录下分别使用 docker-compose up 启动相应服务。（非必须）
+**4**. 根据需求，到 lonely-app 目录下分别使用 docker-compose up 启动相应服务。（例如portainer、bitwarden非必须）
 
 然后打开浏览器，输入 `http://ip/` 就可以访问到主页。
 ## 当前工作
 + 使用 `docker-compose` 集成多个应用，包括nginx代理、code-server、jupyter lab、nginx文件服务器。
-+ 搭建了tomcat、机器学习code-server、ftp服务器等单体应用。
++ 搭建了tomcat、机器学习code-server、ftp服务器等应用。
 
 文件夹含义：
 ```

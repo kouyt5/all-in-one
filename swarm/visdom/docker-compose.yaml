@@ -1,0 +1,13 @@
+version: '3.8'
+services: 
+    visdom:
+        build: .
+        command: 
+            - -port 8097 -hostname chencx.cn 
+            - -base_url /visdom
+            - -enable_login
+        environment: 
+            - VISDOM_USERNAME=chenc 
+            - VISDOM_PASSWORD=511023
+        ports: 
+            - "8097:8097"

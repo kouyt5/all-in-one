@@ -14,6 +14,7 @@ services:
    - ./nginx/web/404:/home/404
    - ./app/www:/home/www # 挂载的时候注意先赋予本地挂载目录777权限
    - ./lonely-app/ftp/workdir/ftp:/home/www/files/win-ftp # 挂载ftp目录
+   - ./nginx/web/icassp2020:/home/www/icassp2020
    links: 
     - code-server:code-server_v1
     - jupyter:jupyter_v1
@@ -29,14 +30,15 @@ services:
       - ./speedup/pip.conf:/root/.pip/pip.conf # 镜像源加速
       - db_code-server:/root/.local/share/code-server
       - python_package:/usr/local/lib/python3.7/dist-packages
+      - ./code-server/setting.xml:/usr/local/apache-maven-3.6.3/conf/settings.xml
     environment: 
       - PASSWORD=511023 # code-server登录密码
     user: root
     links: 
     - jupyter:jupyter_v1
-    # ports: 
-    #  - 8089:8080
-    #  - 8090:8443
+    ports: 
+     - 11400:11400
+     - 11401:11401
   jupyter:
     build: ./jupyter/
     restart: always

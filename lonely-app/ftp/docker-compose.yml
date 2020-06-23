@@ -6,6 +6,7 @@ services:
     image: fauria/vsftpd # https://hub.docker.com/r/fauria/vsftpd
     volumes:
       - ./workdir:/home/vsftpd
+      - ./vsftpd.log:/var/log/vsftpd/vsftpd.log
     environment: 
       - FTP_USER=ftp 
       - FTP_PASS=511023

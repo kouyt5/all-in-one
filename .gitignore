@@ -3,3 +3,5 @@ app/*
 private.txt
 workdir/
 webapp/
+*.war
+nginx/web/icassp2020/

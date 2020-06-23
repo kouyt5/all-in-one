@@ -1,0 +1,22 @@
+version: "3.8"
+services: 
+  tomcat:
+    image: tomcat:latest
+    # build: .
+    ports: 
+      - "8080:8080"
+    volumes: 
+      - ./aisaps.war:/usr/local/tomcat/webapps/aisaps.war
+    deploy:
+      replicas: 1
+      labels: [TEST]
+      restart_policy:
+        condition: on-failure
+        delay: 20s
+        max_attempts: 3
+    healthcheck:
+      test: curl -f http://localhost:8080/aisaps||exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    

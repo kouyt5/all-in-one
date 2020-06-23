@@ -1,0 +1,79 @@
+version: '2.3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+    environment:
+      # - node.name=es01
+      # - cluster.name=es-docker-cluster
+      # - discovery.seed_hosts=es02,es03
+      # - cluster.initial_master_nodes=es01 #,es02,es03
+      # -  xpack.security.enabled=true
+      - "discovery.type=single-node"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elastic_data01:/usr/share/elasticsearch/data
+      # - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.7.0
+    environment: 
+      - SERVER_NAME="kibana"
+      - ELASTICSEARCH_HOSTS="http://elasticsearch:9200"
+      # - elasticsearch.username="kibana"
+      # - elasticsearch.password="changeme"
+    networks: 
+      - elastic
+    ports: 
+      - "5601:5601"
+    links: 
+      - elasticsearch:elasticsearch
+    depends_on: 
+      - elasticsearch
+  #     - apm
+  # apm:
+  #   image: docker.elastic.co/apm/apm-server:7.7.0
+  #   volumes: 
+  #     - ./amp-server.yml:/usr/share/apm-server/apm-server.yml:ro
+  #   environment: 
+  #     - output.elasticsearch.hosts="http://es01:9200"
+  #     - apm-server.host="localhost:8200"
+  #   user: apm-server
+  #   networks: 
+  #     - elastic
+  #   ports: 
+  #     - "8200:8200"
+  #   links: 
+  #     - es01:es01
+  # apm-agent: # 程序探针支持java、python(Flask、Django框架)、go、JS等
+  #   build: ./flask-agent
+  #   networks: 
+  #     - elastic
+  #   links: 
+  #     - apm:apm
+  #   depends_on: 
+  #     - apm
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.7.1
+    volumes: 
+      - ./pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+    networks: 
+      - elastic
+    depends_on: 
+      - elasticsearch
+    
+volumes: 
+    elastic_data01: 
+      driver: local
+networks:
+  elastic:
+    driver: bridge

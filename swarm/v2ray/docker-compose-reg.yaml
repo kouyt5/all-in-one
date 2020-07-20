@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+    v2ray_reg:
+        restart: always
+        image: v2ray_localbuild:v0.1 # build from Dockerfile
+        # build: .
+        volumes:
+            # - ./config.json:/etc/v2ray/config.json
+            - ./config-cn2-usa.json:/etc/v2ray/config.json
+        ports: # 端口较小时需要用引号，不然无效
+            - "8889:1080"
+        networks: 
+          - v2ray-reg
+networks:
+  v2ray-reg:
+    driver: bridge
+# docker stack deploy -c docker-compose.yml v2ray

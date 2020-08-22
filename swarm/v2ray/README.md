@@ -7,8 +7,9 @@
 1. 首先将订阅链接导入到v2rayN中
 2. 去v2rayN的安装目录下，找到 `config.json` 文件，这个文件就是v2ray能够识别的文件
 3. 在`docker-compose.yml`文件中修改端口号
-4. 替换掉这个目录的config.json 文件，启动 `docker-compose -f docker-compose-reg.yaml up` 就成功搭建了一个docker代理，注意yaml文件中的config文件
-5. 如果想整点儿花里胡哨的，`docker stack deploy -c docker-compose.yml v2ray` 使用 swarm 启动一个docker 集群
+4. 构建镜像docker build -t v2ray_localbuild:v0.1 .
+5. 替换掉这个目录的config.json 文件，启动 `docker-compose -f docker-compose-reg.yaml up` 就成功搭建了一个docker代理，注意yaml文件中的config文件
+6. 如果想整点儿花里胡哨的，`docker stack deploy -c docker-compose.yml v2ray` 使用 swarm 启动一个docker 集群
 
 ## 配置文件解析
 配置文件中有两个关键属性，**inbounds** 和 **outbounds**,inbounds 中包含关键的http代理，这个地方的属性关系到你能否通过http代理访问到国内的服务器，其中需要指明的是代理端口，这里使用8889. outbounds 属性下就是连接国外vpn的关键配置，有软件生成后不需要更改。之前尝试自己配置但失败了，所以使用软件生成的比较靠谱。

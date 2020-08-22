@@ -3,10 +3,8 @@ services:
     v2ray_cn:
         restart: always
         image: v2ray_localbuild:v0.1 # build from Dockerfile
-        # build: .
         volumes:
-            # - ./config.json:/etc/v2ray/config.json
-            - ./config-test.json:/etc/v2ray/config.json
+            - ./config-cn.json:/etc/v2ray/config.json
         ports: # 端口较小时需要用引号，不然无效
             - "11478:1080"
         networks: 
@@ -14,4 +12,4 @@ services:
 networks:
   v2ray-cn:
     driver: bridge
-# docker stack deploy -c docker-compose.yml v2ray
+# docker-compose -f docker-compose-cn.yaml up -d

@@ -15,7 +15,7 @@ services:
             labels: [TEST]
             restart_policy:
                 condition: on-failure
-                delay: 300s
+                delay: 30s
                 max_attempts: 5
         healthcheck:
             test: curl --silent --connect-timeout 5 http://www.google.com||exit 1

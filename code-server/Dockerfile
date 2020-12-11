@@ -1,4 +1,4 @@
-FROM codercom/code-server:3.4.1
+FROM codercom/code-server:3.7.4
 USER root
 WORKDIR /tmp
 COPY ./apt-debain10.list /etc/apt/sources.list

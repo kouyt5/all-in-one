@@ -1,4 +1,4 @@
-FROM codercom/code-server:3.7.4
+FROM codercom/code-server:latest
 USER root
 WORKDIR /tmp
 COPY ./apt-debain10.list /etc/apt/sources.list
@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install python3-dev python3-pip -y
 RUN apt-get install openjdk-11-source openjdk-11-jdk -y
 # maven 安装
 RUN apt-get install wget -y \
-    && wget -c https://ftp.wayne.edu/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
+    && wget -c https://apache.website-solution.net/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
     && tar -xvf apache-maven-3.6.3-bin.tar.gz \
     && rm -f apache-maven-3.6.3-bin.tar.gz \
     && mv  apache-maven-3.6.3/ /usr/local/

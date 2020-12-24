@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+  squid:
+    build: .
+    ports: 
+      - "3128:3128"
+    environment: 
+      - TZ=Asia/Shanghai
+    restart: always
+    volumes: 
+      - ./squid/:/etc/squid/
+      - ./cache/:/var/spool/squid/
+    command: ['squid','-NX']

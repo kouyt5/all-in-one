@@ -5,3 +5,8 @@ workdir/
 webapp/
 *.war
 nginx/web/icassp2020/
+lonely-app/cloud/uploads/
+*.db
+*.gz
+*.out
+cloudreve

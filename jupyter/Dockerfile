@@ -11,7 +11,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh && chown 1000:100 /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 CMD ["sh","-c", "start.sh jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 \
- --NotebookApp.password='sha1:8afe621e8f22:51015a88aadb5a9802be3aaa8425e797fccb8666' \
+ --NotebookApp.password='sha1:ccc105f80489:170e2925ff90260afec89cb687e854a358ebbe26' \
   --NotebookApp.allow_origin='*' \
 #  --NotebookApp.token='' \
  --notebook-dir=/workdir --NotebookApp.base_url=${NB_PREFIX}"] 

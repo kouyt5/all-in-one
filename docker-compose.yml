@@ -28,7 +28,7 @@ services:
       - ./app/code-server:/home/coder/project
       - ./speedup/apt-debain10.list:/etc/apt/sources.list
       - ./speedup/pip.conf:/root/.pip/pip.conf # 镜像源加速
-      # - db_code-server:/root/.local/share/code-server
+      - db_code-server:/root/.local/share/code-server
       - python_package:/usr/local/lib/python3.7/dist-packages
       - ./code-server/setting.xml:/usr/local/apache-maven-3.6.3/conf/settings.xml
     environment: 

@@ -1,0 +1,21 @@
+version: '2.3'
+services:
+  nginx:
+    container_name: nginx-tomcat
+    image: nginx:latest
+    restart: always
+    ports:
+    - 80:80
+    - 443:443
+    volumes:
+    - ./conf.d:/etc/nginx/conf.d
+    - ./ssl:/ssl # 挂载ssl证书
+    - ./web/index.html:/home/www/index.html
+    - ./web/404:/home/404
+  tomcat:
+    restart: always
+    image: tomcat:latest
+    volumes:
+        - ./webapp:/usr/local/tomcat/webapps/
+    # ports: # 端口较小时需要用引号，不然无效
+    #     - "8080:8080"

@@ -1,14 +1,21 @@
-# 需要满足驱动大于440
-FROM nvcr.io/nvidia/pytorch:20.01-py3
+FROM codercom/code-server:latest
+USER root
+WORKDIR /tmp
+COPY ./apt-debain10.list /etc/apt/sources.list
+# python安装
+RUN apt-get update && apt-get install python3-dev python3-pip -y
+# java 安装
+RUN apt-get install openjdk-11-source openjdk-11-jdk -y
+# maven 安装
+RUN apt-get install wget -y \
+    && wget -c https://apache.website-solution.net/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
+    && tar -xvf apache-maven-3.6.3-bin.tar.gz \
+    && rm -f apache-maven-3.6.3-bin.tar.gz \
+    && mv  apache-maven-3.6.3/ /usr/local/
+RUN echo "MAVEN_HOME=/usr/local/apache-maven-3.6.3/ \n\
+export MAVEN_HOME \n\
+export PATH=\${PATH}:\${MAVEN_HOME}/bin" >> /etc/profile \
+    && /bin/bash -c "source /etc/profile"
+WORKDIR /home/coder/project
+EXPOSE 8080
 
-ENV PASSWORD 511023
-ENV folder /root/code
-WORKDIR /workspace
-# release 3.2.0
-RUN wget -c https://github.com/cdr/code-server/releases/download/3.2.0/code-server-3.2.0-linux-x86_64.tar.gz \
-    && tar -xvf code-server-3.2.0-linux-x86_64.tar.gz \
-    && cp -r code-server-3.2.0-linux-x86_64 code-server \
-    && rm -rf code-server-3.2.0-linux-x86_64* 
-
-EXPOSE 80
-ENTRYPOINT ./code-server/code-server --host 0.0.0.0 --port 80 --auth password&& /bin/bash

@@ -9,8 +9,8 @@ services:
       - ./vsftpd.log:/var/log/vsftpd/vsftpd.log
     environment: 
       - FTP_USER=ftp 
-      - FTP_PASS=511023
-      - PASV_ADDRESS=139.9.233.236
+      - FTP_PASS=${FTP_PASS} # 密码
+      - PASV_ADDRESS=${PASV_ADDRESS} # ip地址
       - PASV_MIN_PORT=21100
       - PASV_MAX_PORT=21110
       - LOCAL_UMASK=000

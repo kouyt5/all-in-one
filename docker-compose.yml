@@ -5,8 +5,8 @@ services:
    image: nginx:1.15
    restart: always
    ports:
-   - 80:80
-   - 443:443
+    - 80:80
+    - 443:443
    volumes:
    - ./nginx/conf.d:/etc/nginx/conf.d
    - ./nginx/ssl:/ssl # 挂载ssl证书
@@ -33,7 +33,7 @@ services:
       - python_package:/usr/local/lib/python3.7/dist-packages
       - ./lonely-app/code-server/setting.xml:/usr/local/apache-maven-3.6.3/conf/settings.xml
     environment: 
-      - PASSWORD=511023 # code-server登录密码
+      - PASSWORD=${CODE_SERVER_PASSWORD} # code-server登录密码
     user: root
     links: 
     - jupyter:jupyter_v1
@@ -55,9 +55,6 @@ services:
     image: portainer/portainer
     command: -H unix:///var/run/docker.sock
     restart: always
-    ports:
-      - 9000:9000
-      - 8000:8000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data

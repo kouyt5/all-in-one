@@ -31,7 +31,15 @@
 + `docker` ,`docker-compose` 这两个是基本的应用，安装在宿主机，安装步骤自行百度或者官网 https://docs.docker.com/engine/install/ubuntu/
 
 启动步骤(在华为云服务器上部署(2核4G))
-
+### 密码设置
+密码基于环境变量的方式配置。主要有两个密码在docker-compose中设置，code-service和ftp的密码。因此需要设置如下三个环境变量：
+```bash
+export CODE_SERVER_PASSWORD=chenc.520
+export FTP_PASS=chenc.520
+export PASV_ADDRESS=47.104.129.224
+```
+可以将其放在`~/.bashrc` 文件的末尾，也可以直接在shell中输入，不过只能对当前登录的shell有效
+### 启动
 **0**. clone 代码。因为nginx默认开启ssl，因此需要自行根据需求，把ssl的关键文件放入 nginx 目录下，如
 ```
 # 免费 ssl 证书申请 https://freessl.cn/
@@ -41,13 +49,11 @@ nginx/ssl/
 ```
 如果没有证书，注释掉 nginx/conf.d/default.conf 文件中关于ssl的部分。
 
-**1**. jupyter 和 code-server 都需要配置密码，jupyter 的密码配置在jupyter/Dockerfile 中，code-server 在docker-compose.yml 中。jupyter 的配置请看 jupyter 目录下的 [jupyter/README.md](jupyter/README.md) 文件。当然你可以忽略掉密码配置部分，但这两个服务都必须输入密码登录的，可以后面回过头再看。nginx默认监听80端口，所以请确保80端口对外开放。
+**1**. jupyter 和 code-server 都需要配置密码，jupyter 的密码配置在jupyter/Dockerfile 中，code-server 在docker-compose.yml 中。jupyter 的配置请看 jupyter 目录下的 [jupyter/README.md](/lonely-app/jupyter/README.md) 文件。当然你可以忽略掉密码配置部分，但这两个服务都必须输入密码登录的，可以后面回过头再看。nginx默认监听80端口，所以请确保80端口对外开放。
 
-**2**. 在一台裸机上安装 docker,docker-compose 两个 docker 环境运行基础
+**2**. 进入项目根目录，输入`docker-compose up` 就可以直接启动nginx关联服务（包括jupyter、codlab、nginx）
 
-**3**. 进入项目根目录，输入`docker-compose up` 就可以直接启动nginx关联服务（包括jupyter、codlab、nginx）
-
-**4**. 根据需求，到 lonely-app 目录下分别使用 docker-compose up 启动相应服务。
+**3**. 根据需求，到 lonely-app 目录下分别使用 docker-compose up 启动相应服务。
 
 然后打开浏览器，输入 `http://ip/` 就可以访问到主页。
 ## 一些感悟

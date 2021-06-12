@@ -34,9 +34,9 @@
 ### 密码设置
 密码基于环境变量的方式配置。主要有两个密码在docker-compose中设置，code-service和ftp的密码。因此需要设置如下三个环境变量：
 ```bash
-export CODE_SERVER_PASSWORD=chenc.520
-export FTP_PASS=chenc.520
-export PASV_ADDRESS=47.104.129.224
+export CODE_SERVER_PASSWORD=password
+export FTP_PASS=password
+export PASV_ADDRESS=ip
 ```
 可以将其放在`~/.bashrc` 文件的末尾，也可以直接在shell中输入，不过只能对当前登录的shell有效
 ### 启动

@@ -1,27 +1,37 @@
 version: '3.6'
 services:
     gitlab:
-        image: gitlab/gitlab-ce:13.7.8-ce.0
+        image: gitlab/gitlab-ce:latest
         environment:
+            TZ: Asia/Shanghai
             GITLAB_OMNIBUS_CONFIG: |
-                external_url 'http://chenc.icu:7001'
-                gitlab_rails['gitlab_shell_ssh_port'] = 7002
+                external_url 'http://localhost:10086'
+                gitlab_rails['gitlab_shell_ssh_port'] = 11022
+                gitlab_rails['gitlab_email_enabled'] = true
+                gitlab_rails['gitlab_email_display_name'] = 'Admin'
+                gitlab_rails['gitlab_email_from'] = 'xxxx@163.com'
+                gitlab_rails['gitlab_email_reply_to'] = 'xxxx@163.com'
                 gitlab_rails['smtp_enable'] = true
-                gitlab_rails['smtp_address'] = "smtp.ym.163.com"
-                gitlab_rails['smtp_port'] = 465
-                gitlab_rails['smtp_user_name'] = "uestc_413@163.com"
-                gitlab_rails['smtp_password'] = "JPNNXVSJNGPROMMP"
+                gitlab_rails['smtp_address'] = "smtp.163.com"
+                gitlab_rails['smtp_port'] = 25
+                gitlab_rails['smtp_user_name'] = "xxxx@163.com"
+                gitlab_rails['smtp_password'] = "xxxxxxxxxxxxxx"
                 gitlab_rails['smtp_domain'] = "smtp.ym.163.com"
                 gitlab_rails['smtp_authentication'] = "login"
                 gitlab_rails['smtp_enable_starttls_auto'] = true
-                gitlab_rails['smtp_tls'] = true
-                gitlab_rails['gitlab_email_from'] = 'uestc_413@163.com'
-                gitlab_rails['smtp_domain'] = "smtp.ym.163.com"
+                gitlab_rails['smtp_tls'] = false
+                gitlab_rails['manage_backup_path'] = true
+                gitlab_rails['backup_path'] = "/var/opt/gitlab/backups"
+                gitlab_rails['backup_keep_time'] = 604800
+                gitlab_rails['time_zone'] = 'Asia/Shanghai'
         ports:
-            - '7001:80'
-            - '7002:22'
+            - '10086:10086'
+            - '11022:22'
         volumes:
             - gitlab_data:/var/opt/gitlab
+            - gitlab_conf:/etc/gitlab
+            - ./backups:/var/opt/gitlab/backups
         restart: always
 volumes:
-    gitlab_data: {}        
+    gitlab_data: {}
+    gitlab_conf: {}

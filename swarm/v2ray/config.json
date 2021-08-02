@@ -1,84 +1,89 @@
 {
-        "inbounds": [{
-          "port": 1080,
-          "listen":"0.0.0.0",
-          "protocol": "http",
-          "settings": {
-            "tcp":true
+        "log": {
+          "error": "",
+          "loglevel": "info",
+          "access": ""
+        },
+        "inbounds": [
+          {
+            "listen": "0.0.0.0",
+            "protocol": "socks",
+            "settings": {
+              "udp": false,
+              "auth": "noauth"
+            },
+            "port": "1080"
+          },
+          {
+            "listen": "0.0.0.0",
+            "protocol": "http",
+            "settings": {
+              "timeout": 360
+            },
+            "port": "1087"
           }
-        }],
-        "outbounds": [{
-               "tag": "proxy",
-               "protocol": "vmess",
-              "settings": {
-                      "vnext": [{
-                          "address": "cdn.tcpbbr.net",
-                          "port": 443,
-                          "users": [{
-                                  "id": "217aab44-8faf-1b4d-8587-d0ea0e930b94",
-                                  "alterId": 0,
-                                  "email": "t@t.tt",
-                                  "security": "auto"
-                          }]
-                      }],
-                      "servers": null,
-                      "response": null
+        ],
+        "outbounds": [
+          {
+            "mux": {
+              "enabled": false,
+              "concurrency": 8
+            },
+            "protocol": "vmess",
+            "streamSettings": {
+              "tcpSettings": {
+                "header": {
+                  "type": "none"
+                }
               },
-              "streamSettings": {
-                      "network": "ws",
-                      "security": "tls",
-                      "tlsSettings": {
-                              "allowInsecure": true,
-                              "serverName": "cdn.tcpbbr.net"
-                      },
-                      "tcpSettings": null,
-                      "kcpSettings": null,
-                      "wsSettings": {
-                              "connectionReuse": true,
-                              "path": "/cnus",
-                              "headers": {
-                                      "Host": "cdn.tcpbbr.net"
-                              }
-                      },
-                      "httpSettings": null,
-                      "quicSettings": null
+              "tlsSettings": {
+                "allowInsecure": false
               },
-              "mux": {
-                      "enabled": true
-              }
-        },
-        {
-                "tag": "direct",
-                "protocol": "freedom",
-                "settings": {
-                        "vnext": null,
-                        "servers": null,
-                        "response": null
-                },
-                "streamSettings": null,
-                "mux": null
-        },
-        {
-                "tag": "block",
-                "protocol": "blackhole",
-                "settings": {
-                        "vnext": null,
-                        "servers": null,
-                        "response": {
-                                "type": "http"
-                        }
-                },
-                "streamSettings": null,
-                "mux": null
-        }],
-        "routing": {
-          "domainStrategy": "IPOnDemand",
-          "rules": [
-            {
-              "type": "field",
-              "ip": ["geoip:private"],
-              "outboundTag": "direct"
+              "security": "tls",
+              "network": "tcp"
+            },
+            "tag": "proxy",
+            "settings": {
+              "vnext": [
+                {
+                  "address": "hk.tcpbbr.net",
+                  "users": [
+                    {
+                      "id": "08d178d4-ec8b-11eb-a8bf-f23c91cfbbc9",
+                      "alterId": 2,
+                      "level": 0,
+                      "security": "aes-128-gcm"
+                    }
+                  ],
+                  "port": 8388
+                }
+              ]
             }
-          ]
-        }
-      } 
+          },
+          {
+            "tag": "direct",
+            "protocol": "freedom",
+            "settings": {
+              "domainStrategy": "UseIP",
+              "userLevel": 0
+            }
+          },
+          {
+            "tag": "block",
+            "protocol": "blackhole",
+            "settings": {
+              "response": {
+                "type": "none"
+              }
+            }
+          }
+        ],
+        "dns": {},
+        "routing": {
+          "settings": {
+            "domainStrategy": "AsIs",
+            "rules": []
+          }
+        },
+        "transport": {}
+      }

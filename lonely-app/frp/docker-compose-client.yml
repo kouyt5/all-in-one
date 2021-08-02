@@ -6,6 +6,6 @@ services:
             # - ./server:/server
             - ./client:/client
         # command: /server/frps -c /server/frps.ini
-        command: /client/frps -c /client/frps.ini
+        command: /client/frpc -c /client/frpc.ini
         network_mode: host
         restart: always

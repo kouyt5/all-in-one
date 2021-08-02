@@ -1,0 +1,11 @@
+version: "3"
+services:
+    frp: 
+        image: alpine
+        volumes:
+            # - ./server:/server
+            - ./client:/client
+        # command: /server/frps -c /server/frps.ini
+        command: /client/frps -c /client/frps.ini
+        network_mode: host
+        restart: always

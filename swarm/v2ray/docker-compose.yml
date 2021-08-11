@@ -5,12 +5,13 @@ services:
         # build: .
         volumes:
             - ./config.json:/etc/v2ray/config.json
-            # - ./config-cn2-usa.json:/etc/v2ray/config.json
+            - ./log:/log
         ports: # 端口较小时需要用引号，不然无效
             - "1080:1080"  # socket port
             - "1087:1087"  # http port
         environment: 
             http_proxy: "127.0.0.1:1087"
+        restart: always
         # deploy:
         #     replicas: 1
         #     labels: [TEST]

@@ -1,89 +1,87 @@
 {
-        "log": {
-          "error": "",
-          "loglevel": "info",
-          "access": ""
-        },
-        "inbounds": [
-          {
-            "listen": "0.0.0.0",
-            "protocol": "socks",
-            "settings": {
-              "udp": false,
-              "auth": "noauth"
-            },
-            "port": "1080"
-          },
-          {
-            "listen": "0.0.0.0",
-            "protocol": "http",
-            "settings": {
-              "timeout": 360
-            },
-            "port": "1087"
+  "log": {
+    "error": "/log/error.log",
+    "loglevel": "info",
+    "access": "/log/access.log"
+  },
+  "inbounds": [
+    {
+      "listen": "0.0.0.0",
+      "protocol": "socks",
+      "settings": {
+        "udp": false,
+        "auth": "noauth"
+      },
+      "port": "1080"
+    },
+    {
+      "listen": "0.0.0.0",
+      "protocol": "http",
+      "settings": {
+        "timeout": 360
+      },
+      "port": "1087"
+    }
+  ],
+  "outbounds": [
+    {
+      "mux": {
+        "enabled": false,
+        "concurrency": 8
+      },
+      "protocol": "vmess",
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/sub",
+          "headers": {
+            "host": "broadcastlv.chat.bilibili.com"
           }
-        ],
-        "outbounds": [
+        },
+        "security": "none"
+      },
+      "tag": "proxy",
+      "settings": {
+        "vnext": [
           {
-            "mux": {
-              "enabled": false,
-              "concurrency": 8
-            },
-            "protocol": "vmess",
-            "streamSettings": {
-              "tcpSettings": {
-                "header": {
-                  "type": "none"
-                }
-              },
-              "tlsSettings": {
-                "allowInsecure": false
-              },
-              "security": "tls",
-              "network": "tcp"
-            },
-            "tag": "proxy",
-            "settings": {
-              "vnext": [
-                {
-                  "address": "hk.tcpbbr.net",
-                  "users": [
-                    {
-                      "id": "08d178d4-ec8b-11eb-a8bf-f23c91cfbbc9",
-                      "alterId": 2,
-                      "level": 0,
-                      "security": "aes-128-gcm"
-                    }
-                  ],
-                  "port": 8388
-                }
-              ]
-            }
-          },
-          {
-            "tag": "direct",
-            "protocol": "freedom",
-            "settings": {
-              "domainStrategy": "UseIP",
-              "userLevel": 0
-            }
-          },
-          {
-            "tag": "block",
-            "protocol": "blackhole",
-            "settings": {
-              "response": {
-                "type": "none"
+            "address": "hkbn2.tcpbbr.net",
+            "users": [
+              {
+                "id": "08d178d4-ec8b-11eb-a8bf-f23c91cfbbc9",
+                "alterId": 2,
+                "level": 0,
+                "security": "aes-128-gcm"
               }
-            }
+            ],
+            "port": 2244
           }
-        ],
-        "dns": {},
-        "routing": {
-          "settings": {
-            "domainStrategy": "AsIs",
-            "rules": []
-          }
-        },
-        "transport": {}
+        ]
       }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIP",
+        "userLevel": 0
+      }
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole",
+      "settings": {
+        "response": {
+          "type": "none"
+        }
+      }
+    }
+  ],
+  "dns": {},
+  "routing": {
+    "settings": {
+      "domainStrategy": "AsIs",
+      "rules": []
+    }
+  },
+  "transport": {}
+}

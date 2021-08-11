@@ -10,3 +10,4 @@ lonely-app/cloud/uploads/
 *.gz
 *.out
 cloudreve
+log/

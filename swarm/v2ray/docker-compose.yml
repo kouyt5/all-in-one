@@ -10,7 +10,7 @@ services:
             - "1080:1080"  # socket port
             - "1087:1087"  # http port
         environment: 
-            http_proxy: "127.0.0.1:1087"
+            http_proxy: "http://user:password@127.0.0.1:1087"
         restart: always
         # deploy:
         #     replicas: 1

@@ -18,7 +18,15 @@
       "listen": "0.0.0.0",
       "protocol": "http",
       "settings": {
-        "timeout": 360
+        "timeout": 0,
+        "accounts": [
+          {
+            "user": "xxxx",
+            "pass": "xxxx"
+          }
+        ],
+        "allowTransparent": false,
+        "userLevel": 0
       },
       "port": "1087"
     }

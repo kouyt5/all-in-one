@@ -29,3 +29,13 @@
 ├── docker-compose-reg.yaml # 翻墙docker-compose启动文件
 ├── docker-compose.yml # 翻墙的docker swarm部署，但部署总会一段时间后失效，猜测是由于翻墙服务器拒绝访问导致的，因为长时间周期性的`healthy check`
 ```
+
+# 问题以及解决方法
+git设置代理push的时候报错：
+```
+fatal: unable to access 'https://github.com/kouyt5/all-in-one.git/': Proxy CONNECT aborted
+```
+试了很多方法都不行，比如换成`git config`配置，查了很久，问题是因为代理使用了认证导致的，需要git里设置一下：
+```
+git config --global http.proxyAuthMethod 'basic'
+```

@@ -10,4 +10,5 @@ services:
     volumes: 
       - ./squid/:/etc/squid/
       - ./cache/:/var/spool/squid/
+      - ./log/:/var/log/squid/
     command: ['squid','-NX']

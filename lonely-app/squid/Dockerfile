@@ -1,4 +1,4 @@
-from ubuntu:18.04
+FROM ubuntu:18.04
 
 COPY apt-sources18.list /etc/apt/sources.list
 RUN apt update

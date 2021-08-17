@@ -5,5 +5,6 @@ RUN apt update
 RUN apt-get install -y tzdata && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN apt-get install -y -f squid
 VOLUME [ "/var/spool/squid/", "/var/log/squid/" ]
-COPY ./chown.sh /chown.sh
-RUN chmod a+x /chown.sh
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod a+x /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh"]

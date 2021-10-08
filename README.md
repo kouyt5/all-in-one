@@ -15,22 +15,41 @@
   + `portainer` 容器管理平台
   + `bitwarden` 个人密码管理
   + `code-server` 一个网页上运行的 `vscode`
-+ 单个服务，单独运行。在lonely/目录下
++ 单个服务，单独启动运行。在lonely/目录下
   + `ftp` 服务器，用于文件本地上传，再使用 `nginx` 作为文件查看服务器，这样做的原因是 http 可以直接在线查看pdf，ftp不行。
-  + `v2ray` **代理**服务器设置（非VPN，翻墙需要预先有国外服务器或第三方服务，详情见 [lonely-app/v2ray/README.md](lonely-app/v2ray/README.md) ）
+  + `v2ray` **代理**服务器设置（非VPN，翻墙需要预先有国外服务器或第三方服务，详情见 [swarm/v2ray/README.md](swarm/v2ray/README.md) ）
   + `tomcat` 包括`swarm` 下的集群配置
   + `elasticsearch+Kibana+logstash` 环境搭建
   + `cloudrev` 类似于百度云
-  + `mysql` 
+  + `mysql` mysql5.7和mysql8
   + `rabbitmq` 消息队列服务
   + `squid` http代理服务器
+  + `frp` 反向代理，用作内网穿透
+  + `gitlab` 类似GitHub的代码托管网站
+  + `nginx-tomcat` nginx和tomcat的联合，nginx用作网关
 
 后续将会不断完善。
 ## 安装步骤
-环境依赖：（注意，计算机上只需要安装这两个应用，然后所有服务都不需要其他的任何配置，这就是docker的强大之处）
+环境依赖：（注意，计算机上只需要安装这两个应用，然后所有服务都不需要其他的任何配置）
 + `docker` ,`docker-compose` 这两个是基本的应用，安装在宿主机，安装步骤自行百度或者官网 https://docs.docker.com/engine/install/ubuntu/
 
-启动步骤(在华为云服务器上部署(2核4G))
+## 启动步骤(在阿里云服务器上部署(2核4G))
+
+文件夹说明：
+```
+.
+├── app # 产生的永久文件
+├── k8s # k8s安装教程(不全)
+├── lonely-app # 包含单个服务，单独在其文件夹下运行docker-compose up 启动
+├── nginx # 应用集成网关
+├── speedup # 加速源
+└── swarm # 一些swarm集群例子
+```
+如果只想使用单个应用，到lonely-app目录下使用`docker-compose up` 命令启动对应应用即可，例如到 `lonely-app/rabbitmq`目录下输入：
+```
+docker-compose up -d
+```
+即可搭建一个rabbitmq的开发环境。如果想搭建一个http平台，用于访问code-server、nginx的文件服务器、jupyter-lab等请跟随下面的步骤完成。
 ### 密码设置
 密码基于环境变量的方式配置。主要有两个密码在docker-compose中设置，code-service和ftp的密码。因此需要设置如下三个环境变量：
 ```bash
@@ -51,35 +70,14 @@ nginx/ssl/
 
 **1**. jupyter 和 code-server 都需要配置密码，jupyter 的密码配置在jupyter/Dockerfile 中，code-server 在docker-compose.yml 中。jupyter 的配置请看 jupyter 目录下的 [jupyter/README.md](/lonely-app/jupyter/README.md) 文件。当然你可以忽略掉密码配置部分，但这两个服务都必须输入密码登录的，可以后面回过头再看。nginx默认监听80端口，所以请确保80端口对外开放。
 
-**2**. 进入项目根目录，输入`docker-compose up` 就可以直接启动nginx关联服务（包括jupyter、codlab、nginx）
+**2**. 进入项目根目录，输入`docker-compose up` 就可以直接启动nginx关联服务（包括jupyter、jupyterlab、nginx）
 
-**3**. 根据需求，到 lonely-app 目录下分别使用 docker-compose up 启动相应服务。
-
-然后打开浏览器，输入 `http://ip/` 就可以访问到主页。
+然后打开浏览器，输入 `http://ip/` 就可以访问到主页。主页的html代码在nginx目录下。
 ## 一些感悟
 
 + docker 不是万能的，要考虑到容器技术的发展，不少应用不太好迁移到docker中去，使用docker之前最好就要考虑到代码将在docker运行，这样构建的应用或服务才能充分利用docker带来的便利。
 + docker的特性使得不太适合mysql这种需要持久化的应用，docker的服务最好是无状态的那种。
 + 迁移到docker这个过程带来的时间成本可能比你想象中的要多，但是同时这样做带来的便利真如你想象的那样。
-
-文件夹含义：
-```
-|-- app                 # 每个应用的需要储存的文件
-|   |-- code-server
-│   ├── juypter         # jupyter容器产生的文件，防止重新启动容器信息丢失
-│   └── www             # 存放nginx 文件
-|-- lonely-app          # 单体应用，不包含到集群
-│   ├── code-server     # 单个机器学校pytorch 和cuda环境
-│   ├── ftp             # ftp 注意，nginx需要ftp的文件夹，因为nginx不提供文件上传功能
-│   └── tomcat          # tomcat服务器
-|-- nginx               # nginx代理配置
-│   ├── conf.d
-│   ├── ssl             # 证书配置
-│   └── web             # 简单 web 页面
-|-- speedup             # 加速源
-|-- k8s                 # 未实现
-`-- swarm               # docker swarm 集群应用
-```
 
 ## 常用命令
 清理docker无用容器或镜像

@@ -3,7 +3,7 @@ USER root
 WORKDIR /tmp
 COPY ./apt-debain10.list /etc/apt/sources.list
 # python安装
-RUN apt-get update && apt-get install python3-dev python3-pip -y
+RUN apt-get update && apt-get install python3.8 libx11-xcb1 -y
 # java 安装
 RUN apt-get install openjdk-11-source openjdk-11-jdk -y
 # maven 安装

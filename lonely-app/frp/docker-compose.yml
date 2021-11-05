@@ -9,3 +9,11 @@ services:
         # command: /client/frps -c /client/frps.ini
         network_mode: host
         restart: always
+        deploy:
+            resources:
+                limits:
+                    cpus: '1'
+                    memory: 50M
+                reservations:
+                    cpus: '0.25'
+                    memory: 20M

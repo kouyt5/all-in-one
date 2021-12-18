@@ -1,21 +1,40 @@
 # all-in-one
-目前就取个这个名字吧，表示将所有的东西都在一个项目里。
-## 解决问题是什么？
-遇到一件系统性的麻烦事。就是在计算机刚开始使用时候，搭建各种各样的服务，因为搬砖需要，也会搭建各种代码的运行环境，然而，经常是这个环境用一段时间就搁置在那里了，很久之后就搞忘了环境到底安装了什么东西？当然这不是致命的，因为可以重新创建环境就行，然而如果在电脑上安装了很多服务，例如ftp、mysql等，大部分服务需要修改配置文件，如果很久时间不碰了，很难记清楚搭建的步骤、到底在哪里修改了什么文件等等等等，当然，如果比较勤快的话可以做一个记录，每一步的操作都记下来，可这种低级的事情真不想做，首先如果细节比较多的话非常麻烦，而且很容易漏忘什么东西。当然你可以说我比较细致，这些no problem，然而如果你的电脑崩了呢，按照记录的教程一步步搭建将会非常麻烦，你可以说我不怕麻烦，但是如果你的电脑拿给别人用呢，别人也看你的教程么，也可以，但不专业，很麻烦。（注意：这些麻烦事都是在服务器上，自己用的笔记本应该不需要安装各种服务）
+基于 docker 封装的各种开源组件，方便开箱即用。
+## Q&A
 
-## 解决方案
-前段时间一直在使用了解 `docker`，docker 可以使得环境完全可视化，只要按照规矩来，不要在容器内直接操作环境，那么就能保证环境的可复现性。但只使用docker只能作为环境隔离工具，达不到管理需求，~~因此准备使用 `k8s` 为计算机搭建一个电脑资源可视化的平台，管理所有的应用或者服务~~（k8s太过于复杂，目前portainer可以满足需求）。因此，对于开发来说，将导致所有的代码将运行在docker之上（云原生），这个方案经过验证是可行的。然后是其他的服务也使用docker创建，现在docker比较成熟，各种应用几乎都包含 docker，也具有可行性，当然，可能按照自己的意愿搭建一个个服务有些困难需要克服，但是我们可以一步步学习嘛，总能解决的。
+**contribution ?**
 
-之前也听说过 `nginx` 反向代理，代理http应用，想着就可以结合`code-server` 在网页上开发，岂不是美滋滋。使用nginx还可以节约端口，不需要在计算机上另开一个端口，就不用设置内网穿透了，还得记住端口，久了也要搞忘。 nginx 配置还是踩了很多坑，看来自己的能力还是真的撑不起自己的野心，而且很多app路由并没有考虑到nginx代理这种情况，导致http路由错误，因此用nignx代理的服务有限。
+秉承代码搬运工原则，该项目库没有太多额外的代码(python, Java, etc)，主要目的是给开源组件或者服务(例如 **mysql**, **ftp**, **rabbitmq**, **tomcat** 等)封装了方便启动并且风格统一的 Dockerfile ,然后使用 `docker-compose` 技术启动
 
-总结一下，目前支持的服务：
+**why use docker?**
+
+docker 技术保证了环境的隔离和可复现性，正常情况下能够很方便的迁移或者安装到不同的环境下。
+
+**structure of the repository**
+
+项目有两个功能，首先是最可能用到的**单个服务集合**，例如您想启动一个 mysql，直接到 lonely-app 下输入 `docker-compose up -d` 即可。另一个是额外附带一个**nginx 代理的网关**，网关下包含一些有用的服务，例如 code-server 和文件服务器。在根目录输入`docker-compose up -d` 启动，两者互相不冲突。这个服务作为作者的日常开发使用已经稳定部署在云服务器上。
+
+项目的文件夹说明如下：
+```
+.
+├── app # 产生的永久文件
+├── k8s # k8s安装教程(不全)
+├── lonely-app # 包含单个服务，单独在其文件夹下运行docker-compose up 启动
+├── nginx # 应用集成网关
+├── speedup # 加速源
+└── swarm # 一些swarm集群例子
+```
+
+
+## 包含的服务：
+
 + 经过nginx代理的服务：
   + `jupyter lab` 一个专门用来科学计算的工具
   + `nginx` 服务器 作为所有服务的代理
   + `portainer` 容器管理平台
-  + `bitwarden` 个人密码管理
   + `code-server` 一个网页上运行的 `vscode`
-+ 单个服务，单独启动运行。在lonely/目录下
+
++ 单个服务，单独启动运行。在lonely/目录或者swarm下
   + `ftp` 服务器，用于文件本地上传，再使用 `nginx` 作为文件查看服务器，这样做的原因是 http 可以直接在线查看pdf，ftp不行。
   + `v2ray` **代理**服务器设置（非VPN，翻墙需要预先有国外服务器或第三方服务，详情见 [swarm/v2ray/README.md](swarm/v2ray/README.md) ）
   + `tomcat` 包括`swarm` 下的集群配置
@@ -27,39 +46,36 @@
   + `frp` 反向代理，用作内网穿透
   + `gitlab` 类似GitHub的代码托管网站
   + `nginx-tomcat` nginx和tomcat的联合，nginx用作网关
+  + `bitwarden` 个人密码管理
 
 后续将会不断完善。
-## 安装步骤
-环境依赖：（注意，计算机上只需要安装这两个应用，然后所有服务都不需要其他的任何配置）
-+ `docker` ,`docker-compose` 这两个是基本的应用，安装在宿主机，安装步骤自行百度或者官网 https://docs.docker.com/engine/install/ubuntu/
+## 环境依赖
++ `docker`
++ `docker-compose`
 
-## 启动步骤(在阿里云服务器上部署(2核4G))
+这两个是基本的应用，安装官网链接： https://docs.docker.com/engine/install/ubuntu/
 
-文件夹说明：
-```
-.
-├── app # 产生的永久文件
-├── k8s # k8s安装教程(不全)
-├── lonely-app # 包含单个服务，单独在其文件夹下运行docker-compose up 启动
-├── nginx # 应用集成网关
-├── speedup # 加速源
-└── swarm # 一些swarm集群例子
-```
-如果只想使用单个应用，到lonely-app目录下使用`docker-compose up` 命令启动对应应用即可，例如到 `lonely-app/rabbitmq`目录下输入：
+## 单个服务启动方法
+
+到lonely-app目录下使用 `docker-compose up` 命令启动对应应用即可，例如到 `lonely-app/rabbitmq`目录下输入：
 ```
 docker-compose up -d
 ```
-即可搭建一个rabbitmq的开发环境。如果想搭建一个http平台，用于访问code-server、nginx的文件服务器、jupyter-lab等请跟随下面的步骤完成。
+即可搭建一个rabbitmq的开发环境。部分环境例如 ftp 可能会依赖于环境变量来设置密码，如果需要，请先命令行设置环境变量。
+
+## 基于 nginx 服务器的 https 代理网关搭建
+如果想搭建一个 http 网页，用于访问 code-server 、nginx 的文件服务器、jupyter-lab 等请跟随下面的步骤完成。
+
 ### 密码设置
-密码基于环境变量的方式配置。主要有两个密码在docker-compose中设置，code-service和ftp的密码。因此需要设置如下三个环境变量：
+密码基于环境变量的方式配置。主要有两个密码在 `docker-compose.yml` 中设置，code-service 和 ftp 的密码。因此需要设置如下三个环境变量：
 ```bash
 export CODE_SERVER_PASSWORD=password
 export FTP_PASS=password
 export PASV_ADDRESS=ip
 ```
-可以将其放在`~/.bashrc` 文件的末尾，也可以直接在shell中输入，不过只能对当前登录的shell有效
+可以将其放在`~/.bashrc` 文件的末尾，也可以直接在 shell 中输入，不过只能对当前登录的 shell 有效
 ### 启动
-**0**. clone 代码。因为nginx默认开启ssl，因此需要自行根据需求，把ssl的关键文件放入 nginx 目录下，如
+**0**. 因为 nginx 默认开启 ssl 即 https ，因此需要自行根据需求，把 ssl 的关键文件放入 nginx 目录下，如
 ```
 # 免费 ssl 证书申请 https://freessl.cn/
 nginx/ssl/
@@ -73,14 +89,8 @@ nginx/ssl/
 **2**. 进入项目根目录，输入`docker-compose up` 就可以直接启动nginx关联服务（包括jupyter、jupyterlab、nginx）
 
 然后打开浏览器，输入 `http://ip/` 就可以访问到主页。主页的html代码在nginx目录下。
-## 一些感悟
+## last
 
 + docker 不是万能的，要考虑到容器技术的发展，不少应用不太好迁移到docker中去，使用docker之前最好就要考虑到代码将在docker运行，这样构建的应用或服务才能充分利用docker带来的便利。
 + docker的特性使得不太适合mysql这种需要持久化的应用，docker的服务最好是无状态的那种。
 + 迁移到docker这个过程带来的时间成本可能比你想象中的要多，但是同时这样做带来的便利真如你想象的那样。
-
-## 常用命令
-清理docker无用容器或镜像
-```
-docker system prune
-```

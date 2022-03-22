@@ -48,3 +48,9 @@ type = tcp
 local_port = 3128
 remote_port = 13128
 ```
+
+## https 流量加密
+
+frp 流量默认未加密，可能会被运营商检测到从而包丢失，因此如果发现无法连接到frp服务器可能是这个原因导致的。解决方法是使用https 技术。
+
+首先申请https证书，参考nginx 配置证书部分，申请到 `xxx.key` 和 `xxx.crt` 两个文件，server 文件夹下保存两个文件，client 保存 crt 证书文件，具体名称请在frpc.ini 和 frps.ini 中配置，server_addr 参数记得修改为申请证书时的**域名**。

@@ -7,6 +7,7 @@ services:
    ports:
     - 80:80
     - 443:443
+    - 4433:443
    volumes:
    - ./nginx/conf.d:/etc/nginx/conf.d
    - ./nginx/ssl:/ssl # 挂载ssl证书
@@ -20,7 +21,6 @@ services:
     - code-server:code-server_v1
     - jupyter:jupyter_v1
     - portainer:portainer_v1
-    - bitwardenrs:bitwardenrs_v1
   code-server:
     restart: always
     # image: codercom/code-server:3.2.0
@@ -58,12 +58,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
-  bitwardenrs: # 密码管理
-    restart: always
-    image: bitwardenrs/server:latest
-    volumes:
-      - bw-data:/data/
-
 volumes: 
   db_code-server: {}
   db_jupyter: {}

@@ -11,3 +11,5 @@ lonely-app/cloud/uploads/
 *.out
 cloudreve
 log/
+*.key
+*.crt

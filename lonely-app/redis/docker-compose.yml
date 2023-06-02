@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  redis:
+    image: redis:alpine3.15
+    environment:
+      - REDIS_PASSWORD=test
+      - REDIS_PORT_NUMBER=6379
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/srv/data
+    restart: always
+volumes:
+  redis_data:
+    driver: local

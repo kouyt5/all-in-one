@@ -13,13 +13,7 @@ services:
             http_proxy: "http://user:password@127.0.0.1:1087"
             https_proxy: "http://user:password@127.0.0.1:1087"
         restart: always
-        # deploy:
-        #     replicas: 1
-        #     labels: [TEST]
-        #     restart_policy:
-        #         condition: on-failure
-        #         delay: 30s
-        #         max_attempts: 5
+        command: ["run", "-c", "/etc/v2ray/config.json"]
         deploy:
             resources: 
                 limits:

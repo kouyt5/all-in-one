@@ -1,0 +1,20 @@
+.upload-dragger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-inline-start: 12%;
+    padding-inline-end: 12%;
+    margin-top: 2%;
+    margin-bottom: 15%;
+    height: max-content;
+    width: 80%;
+  }
+
+  .upload-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7%;
+  }

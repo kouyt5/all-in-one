@@ -13,3 +13,4 @@ cloudreve
 log/
 *.key
 *.crt
+nginx/web/*

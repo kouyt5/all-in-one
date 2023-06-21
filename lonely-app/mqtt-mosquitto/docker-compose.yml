@@ -1,0 +1,15 @@
+version: '3.6'
+services:
+    mosquitto:
+        # image: eclipse-mosquitto:2.0.15
+        image: iegomez/mosquitto-go-auth:2.1.0-mosquitto_1.6.14
+        ports:
+            - '21883:1883'
+            - '29001:9001'
+        volumes:
+            - ./data:/etc/mosquitto/data
+            - ./conf:/etc/mosquitto/config
+            - ./logs:/etc/mosquitto/log
+            - ./auth.config:/etc/mosquitto/conf.d
+        restart: always
+        command: ["/usr/sbin/mosquitto", "-c", "/etc/mosquitto/config/mosquitto.conf"]

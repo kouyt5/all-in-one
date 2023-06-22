@@ -32,15 +32,19 @@
   width: 30vh;
   margin-inline-start: 2vh;
   margin-inline-end: 2vh;
+  margin-top: 2vh;
 }
 
 .App-content {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   padding-inline-start: 10vh;
   padding-inline-end: 10vh;
+  height: 100%;
+  margin-bottom: 12vh;
 }
 
 .Item-Img {
@@ -49,8 +53,8 @@
 
 .App-footer {
   bottom: 0;
+  position: fixed;
   text-align: center;
-  position: absolute;
   width: 100%;
 }
 

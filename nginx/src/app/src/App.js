@@ -16,11 +16,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={process.env.PUBLIC_URL + '/avtor.jpg'} className="App-logo" alt="logo" />
-        {/* <Routes>
-          <Route path="/" component={App}>
-            <Route path="file-upload" component={FileUpload} />
-          </Route>
-        </Routes> */}
       </header>
 
       <Content className='App-content'>
@@ -43,7 +38,7 @@ function App() {
             window.location.href = process.env.PUBLIC_URL + "/jupyter/"
           }
         >
-          <Meta title="File Browser" description="jupyter lab，用于科学计算，绘制流程图等" size='small' />
+          <Meta title="Jupyter Lab" description="jupyter lab，用于科学计算，绘制流程图等" size='small' />
         </Card>
 
         <Card
@@ -65,7 +60,7 @@ function App() {
             window.location.href = process.env.PUBLIC_URL + "/#/file-upload/"
           }
         >
-          <Meta title="File Browser" description="文件浏览服务器, 用于共享文件下载" size='small' />
+          <Meta title="File Uploader" description="用于上传共享文件" size='small' />
         </Card>
       </Content>
 
@@ -75,33 +70,6 @@ function App() {
     </div>
   );
 }
-
-
-// ReactDOM.render(
-//   <Router>
-//     <Route path="/" component={App}>
-//       <Route path="/file-upload" component={FileUpload} />
-//     </Route>
-//   </Router>,
-//   document.getElementById('app')
-// );
-
-// const AppRouter = () => {
-//   let routes = useRoutes([
-//     {
-//       path: "/",
-//       element: <App />,
-//       children: [
-//         {
-//           path: "file-upload",
-//           element: <FileUpload />
-//         },
-//       ]
-//     },
-
-//   ]);
-//   return routes;
-// };
 
 export default class AppWrapper extends Component {
   render() {

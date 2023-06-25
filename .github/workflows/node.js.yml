@@ -8,8 +8,12 @@ on:
     branches: [ "master" ]
     paths:
       - 'nginx/src/app/**'
+      - '.github/workflows/node.js.yml'
   pull_request:
     branches: [ "master" ]
+    paths:
+      - 'nginx/src/app/**'
+      - '.github/workflows/node.js.yml'
 
 jobs:
   build:

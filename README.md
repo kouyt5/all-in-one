@@ -18,7 +18,6 @@ docker 技术保证了环境的隔离和可复现性，正常情况下能够很�
 ```
 .
 ├── app # 产生的永久文件
-├── k8s # k8s安装教程(不全)
 ├── lonely-app # 包含单个服务，单独在其文件夹下运行docker-compose up 启动
 ├── nginx # 应用集成网关
 ├── speedup # 加速源

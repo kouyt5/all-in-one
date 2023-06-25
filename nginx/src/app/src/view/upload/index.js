@@ -39,7 +39,7 @@ class FileUpload extends Component {
 
         var uploadPath = process.env.PUBLIC_URL + '/files/win-ftp/test/tmp/';
         return (
-            <Content className="upload-content" di>
+            <Content className="upload-content" di="true">
                 <p>upload to <a href={uploadPath}>{uploadPath}</a></p>
                 <Dragger {...props} className="upload-dragger">
                     <p className="ant-upload-drag-icon">

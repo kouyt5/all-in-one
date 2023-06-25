@@ -7,7 +7,7 @@ on:
   push:
     branches: [ "master" ]
     paths:
-      - 'nginx/src/app/'
+      - 'nginx/src/app/**'
   pull_request:
     branches: [ "master" ]
 

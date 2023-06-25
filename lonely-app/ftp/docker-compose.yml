@@ -3,18 +3,21 @@ services:
 # ftp服务
   ftp-server:
     restart: always
-    image: fauria/vsftpd # https://hub.docker.com/r/fauria/vsftpd
+    # image: fauria/vsftpd # https://hub.docker.com/r/fauria/vsftpd
+    build: .
     volumes:
       - ./workdir:/home/vsftpd
-      - ./vsftpd.log:/var/log/vsftpd/vsftpd.log
+      - ./log:/var/log/vsftpd
     environment: 
       - FTP_USER=ftp 
       - FTP_PASS=${FTP_PASS} # 密码
       - PASV_ADDRESS=${PASV_ADDRESS} # ip地址
+      - PASV_ADDR_RESOLVE=true
       - PASV_MIN_PORT=21100
       - PASV_MAX_PORT=21110
       - LOCAL_UMASK=000
       - FILE_OPEN_MODE=0666
+      - PASV_PROMISCUOUS=YES
     # user: root
     ports: # 端口较小时需要用引号，不然无效
       - "20:20"

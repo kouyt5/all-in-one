@@ -31,8 +31,9 @@ docker 技术保证了环境的隔离和可复现性，正常情况下能够很�
 + 经过nginx代理的服务：
   + `jupyter lab` 一个专门用来科学计算的工具
   + `nginx` 服务器 作为所有服务的代理
-  + `portainer` 容器管理平台
+  + `portainer` 容器管理平台 （被遗弃）
   + `code-server` 一个网页上运行的 `vscode`
+  + 文件上传页面（react + SpringBoot(kotlin)）
 
 + 单个服务，单独启动运行。在lonely/目录或者swarm下
   + `ftp` 服务器，用于文件本地上传，再使用 `nginx` 作为文件查看服务器，这样做的原因是 http 可以直接在线查看pdf，ftp不行。
@@ -86,7 +87,7 @@ nginx/ssl/
 
 **1**. jupyter 和 code-server 都需要配置密码，jupyter 的密码配置在jupyter/Dockerfile 中，code-server 在docker-compose.yml 中。jupyter 的配置请看 jupyter 目录下的 [jupyter/README.md](/lonely-app/jupyter/README.md) 文件。当然你可以忽略掉密码配置部分，但这两个服务都必须输入密码登录的，可以后面回过头再看。nginx默认监听80端口，所以请确保80端口对外开放。
 
-**2**. 进入项目根目录，输入`docker-compose up` 就可以直接启动nginx关联服务（包括jupyter、jupyterlab、nginx）
+**2**. 进入项目根目录，输入`docker-compose up --build` 就可以直接启动nginx关联服务（包括jupyter、jupyterlab、nginx）
 
 然后打开浏览器，输入 `http://ip/` 就可以访问到主页。主页的html代码在nginx目录下。
 ## last

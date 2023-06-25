@@ -31,6 +31,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: './nginx/src/app/package-lock.json'
-    - run: cd nginx/src/app && npm ci
-    - run: cd nginx/src/app && npm run build --if-present
-    - run: cd nginx/src/app && npm test
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test

@@ -1,0 +1,32 @@
+server:
+  port: 8081
+spring:
+  servlet:
+    multipart:
+      max-file-size: 4096MB # 单个文件大小
+      max-request-size: 10240MB # 总文件大小（允许存储文件的文件夹大小）
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://chencx.cn:3306/mqtt?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: xxxxxx
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+ftp:
+  host: chencx.cn
+  port: 21
+  username: ftp
+  password: ${FTP_PASS}
+  # 模式（PORT.主动模式，PASV.被动模式）
+  passiveMode: true
+  defaultPath: /test/tmp/
+  timeout: 30000
+  buffeSize: 8192
+  minldle: 5
+  maxldle: 20
+  maxWait: 30000
+  block: true

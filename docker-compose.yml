@@ -2,7 +2,7 @@ version: '2'
 services:
   nginx:
    container_name: my-nginx
-   image: nginx:1.15
+   build: nginx/
    restart: always
    ports:
     - 80:80
@@ -11,14 +11,15 @@ services:
    volumes:
    - ./nginx/conf.d:/etc/nginx/conf.d
    - ./nginx/ssl:/ssl # 挂载ssl证书
-   - ./nginx/web/:/home/www/web/
+  #  - ./nginx/web/:/home/www/web/
    - ./nginx/web/404:/home/404
    - ./app/www/files:/home/www/files # 挂载的时候注意先赋予本地挂载目录777权限
    - ./lonely-app/ftp/workdir/ftp:/home/www/files/win-ftp # 挂载ftp目录
    links: 
     - code-server:code-server_v1
     - jupyter:jupyter_v1
-    - portainer:portainer_v1
+    # - portainer:portainer_v1
+    - api_server:api_server_v1
   code-server:
     restart: always
     # image: codercom/code-server:3.2.0
@@ -49,13 +50,22 @@ services:
     user: root
     # ports: 
     #   - 8889:8888
-  portainer:
-    image: portainer/portainer
-    command: -H unix:///var/run/docker.sock
+  # portainer:
+  #   image: portainer/portainer
+  #   command: -H unix:///var/run/docker.sock
+  #   restart: always
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - portainer_data:/data
+  api_server:
+    build: ./nginx/src/fuploads/
     restart: always
+    # environment: 
+    #   - FTP_PASS=${PASV_ADDRESS} # code-server登录密码
+    command: --spring.profiles.active=prod --ftp.password=${FTP_PASS}
+    network_mode: "host"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
+      - ./nginx/src/fuploads/logs:/logs
 volumes: 
   db_code-server: {}
   db_jupyter: {}

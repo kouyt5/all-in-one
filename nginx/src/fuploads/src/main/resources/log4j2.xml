@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出-->
+<Configuration status="WARN">
+    <!--
+          日志级别
+          trace： 是追踪，就是程序推进以下，你就可以写个trace输出，所以trace应该会特别多.
+          debug： 调试一般就只用这个作为最低级别，trace压根不用。
+          info： 输出一下你感兴趣的或者重要的信息，这个用的最多了。
+          warn： 有些信息不是错误信息，但是也要给程序员的一些提示。
+          error： 错误信息。用的也比较多。
+          fatal： 级别比较高了。重大错误，这种级别你可以直接停止程序了，是不应该出现的错误。
+           -->
+    <properties>
+        <!-- 定义日志存放目录 -->
+        <property name="logPath">/logs</property>
+        <!-- 输出日志的格式 -->
+        <!--
+                %d{yyyy-MM-dd HH:mm:ss, SSS} : 日志生产时间
+                %p : 日志的level DEBUG标签
+                %c : logger的名称
+                %t : 当前线程名称
+                %m : 日志内容，即 logger.info("message")
+                %n : 换行符
+                %l : 包含链接的日志打印位置 location
+                %n : 换行
+                %C : Java类名
+                %L : 日志输出所在行数
+                %M : 日志输出所在方法名 Method
+                hostName : 本地机器名
+                hostAddress : 本地ip地址 -->
+        <property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t-%-3L] %-5level %logger{5} %M - %msg%xEx%n
+        </property>
+        <property name="CONSOLE_PATTERN">%d{MM-dd HH:mm:ss.SSS} %-5level [%t] %l- %msg%xEx%n
+        </property>
+    </properties>
+    <Appenders>
+        <Console name="ConsoleLog" target="SYSTEM_OUT">
+            <!--只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!--输出日志的格式，引用自定义模板 PATTERN -->
+            <PatternLayout pattern="${CONSOLE_PATTERN}"/>
+        </Console>
+        <!--输出到文件 -->
+        <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定 -->
+        <!--append为TRUE表示消息增加到指定文件中，false表示消息覆盖指定的文件内容，默认值是true -->
+        <!-- 把error等级记录到文件 一般不用 -->
+        <File name="FileLog" fileName="${logPath}/error.log">
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${PATTERN}"/>
+        </File>
+        <!--输出到循环日志，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
+        <RollingRandomAccessFile name="RollingFileLog" fileName="${logPath}/app.log"
+                                 filePattern="${logPath}/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout charset="UTF-8" pattern="${PATTERN}"/>
+            <SizeBasedTriggeringPolicy size="5MB"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->
+    <Loggers>
+        <!--建立一个默认的Root的logger，记录大于level高于warn的信息，如果这里的level高于Appenders中的，
+        则Appenders中也是以此等级为起点，比如，这里level="fatal"，则Appenders中只出现fatal信息 -->
+        <!-- 生产环境level>=warn -->
+        <Root level="info">
+            <!-- 输出器,可选上面定义的任何项组合，或全选，做到可随意定制 -->
+            <appender-ref ref="ConsoleLog"/>
+            <appender-ref ref="RollingFileLog"/>
+        </Root>
+        <!--级别大于level的将会被过滤，最高为fatal,additivity表示是否传递到父Logger -->
+        <Logger name="org.springframework" level="debug" additivity="false">
+            <appender-ref ref="RollingFileLog" level="info"/>
+            <appender-ref ref="ConsoleLog" level="warn"/>
+        </Logger>
+
+        <Logger name="org.hibernate" level="info" additivity="false">
+            <appender-ref ref="RollingFileLog" level="info"/>
+            <appender-ref ref="ConsoleLog" level="warn"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>

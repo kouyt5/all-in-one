@@ -1,0 +1,63 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+	id 'org.springframework.boot' version '3.1.0'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.jetbrains.kotlin.jvm' version '1.8.21'
+	id 'org.jetbrains.kotlin.plugin.spring' version '1.8.21'
+	id 'org.jetbrains.kotlin.plugin.jpa' version '1.8.21'
+}
+
+group = 'com.chenc'
+version = '0.1'
+
+java {
+	sourceCompatibility = '17'
+}
+
+repositories {
+	maven {url 'https://maven.aliyun.com/repository/central' }
+	maven {url 'https://maven.aliyun.com/nexus/content/groups/public' }
+	maven {url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+	implementation 'org.jetbrains.kotlin:kotlin-reflect'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+	implementation 'commons-net:commons-net:3.9.0'
+	implementation 'org.apache.commons:commons-dbcp2:2.9.0'
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.1.1'
+
+
+}
+
+configurations.all {
+	exclude group:'org.springframework.boot', module: 'spring-boot-starter-logging'
+	exclude module: 'logback-classic'
+	exclude module: 'logback-core'
+}
+
+tasks.withType(KotlinCompile) {
+	kotlinOptions {
+		freeCompilerArgs += '-Xjsr305=strict'
+		jvmTarget = '17'
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}

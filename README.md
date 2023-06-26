@@ -64,6 +64,9 @@ docker-compose up -d
 即可搭建一个rabbitmq的开发环境。部分环境例如 ftp 可能会依赖于环境变量来设置密码，如果需要，请先命令行设置环境变量。
 
 ## 基于 nginx 服务器的 https 代理网关搭建
+
+<img alt="主页" src="assets/homepage.jpg" height="400">
+
 如果想搭建一个 http 网页，用于访问 code-server 、nginx 的文件服务器、jupyter-lab 等请跟随下面的步骤完成。
 
 ### 密码设置

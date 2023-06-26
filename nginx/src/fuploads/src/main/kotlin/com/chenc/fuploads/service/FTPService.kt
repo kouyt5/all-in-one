@@ -25,14 +25,15 @@ class FTPService(@Autowired var pool: GenericObjectPool<FTPClient>) {
                 return result
             }
             ftpClient.changeWorkingDirectory(path)
-            log.info("write file: ${fileName} done")
             // https://blog.csdn.net/gingerredjade/article/details/62036205
             // var encodeFileName: String =
             //         String(
             //                 fileName.toByteArray(Charset.forName(FTPUtils.LOCAL_CHARSET)),
             //                 Charset.forName(FTPUtils.SERVER_CHARSET)
             // )
+            log.info("before upload job have done!")
             result = FTPUtils.upload(ftpClient, file, fileName)
+            log.info("write file: ${fileName} done")
         } catch (e: Exception) {
             log.error("upload error", e)
             result = UploadStatus.UNKNOWN_ERROR

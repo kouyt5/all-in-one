@@ -10,8 +10,6 @@ name: DI
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 permissions:
   contents: read
@@ -23,5 +21,7 @@ jobs:
       run:
         working-directory: /home/chenc/workdir/all-in-one
     steps:
+    - name: clone lastet code
+      run: git switch master && git pull origin master
     - name: restart service
       run: docker compose up --build -d

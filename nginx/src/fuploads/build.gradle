@@ -6,6 +6,17 @@ plugins {
 	id 'org.jetbrains.kotlin.jvm' version '1.8.21'
 	id 'org.jetbrains.kotlin.plugin.spring' version '1.8.21'
 	id 'org.jetbrains.kotlin.plugin.jpa' version '1.8.21'
+	id 'com.gradle.enterprise' version '3.9'
+}
+// enable Github Action gradle scan
+gradleEnterprise {
+    if (System.getenv("CI") != null) {
+        buildScan {
+            publishAlways()
+            termsOfServiceUrl = "https://gradle.com/terms-of-service"
+            termsOfServiceAgree = "yes"
+        }
+    }
 }
 
 group = 'com.chenc'

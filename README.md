@@ -67,7 +67,7 @@ docker-compose up -d
 
 <img alt="主页" src="assets/homepage.jpg" height="400">
 
-如果想搭建一个 http 网页，用于访问 code-server 、nginx 的文件服务器、jupyter-lab 等请跟随下面的步骤完成。
+如果想搭建一个如上图所示的网页，用于访问 code-server 、nginx 的文件服务器、jupyter-lab 等请跟随下面的步骤完成。
 
 ### 密码设置
 密码基于环境变量的方式配置。主要有两个密码在 `docker-compose.yml` 中设置，code-service 和 ftp 的密码。因此需要设置如下三个环境变量：

@@ -1,7 +1,7 @@
 # 用于自动部署DI
 # 首先在 Action 中配置一个 Self-hosted 的 Runner， 其运行在私有的服务器上
 # push master 操作将会触发该 Runner 进行部署命令
-name: DI
+name: 自动部署
 
 on:
   push:
@@ -17,7 +17,9 @@ jobs:
       run:
         working-directory: /home/chenc/workdir/all-in-one
     steps:
-    - name: clone lastet code
+    - name: docker 清理
+      run: docker system prune -f && docker image prune -f
+    - name: master 分支代码更新
       run: git switch master && git pull origin master
-    - name: restart service
+    - name: 重启服务
       run: docker compose up --build -d

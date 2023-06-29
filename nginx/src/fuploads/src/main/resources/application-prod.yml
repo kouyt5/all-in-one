@@ -9,7 +9,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://chencx.cn:3306/mqtt?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
     username: root
-    password: xxxxx
+    password: ${MYSQL_PASS}
   jpa:
     hibernate:
       ddl-auto: validate

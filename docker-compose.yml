@@ -62,7 +62,8 @@ services:
     restart: always
     # environment: 
     #   - FTP_PASS=${PASV_ADDRESS} # code-server登录密码
-    command: --spring.profiles.active=prod --ftp.password=${FTP_PASS}
+    command: --spring.profiles.active=prod --ftp.password=${FTP_PASS} \
+            --spring.datasource.password=${MYSQL_PASS}
     network_mode: "host"
     volumes:
       - ./nginx/src/fuploads/logs:/logs

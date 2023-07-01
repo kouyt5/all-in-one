@@ -1,8 +1,7 @@
-package com.chenc.fuploads
+package com.chenc.fuploads.service
 
 import com.chenc.fuploads.pojo.UploadStatus
 import com.chenc.fuploads.utils.FTPUtils
-import java.nio.charset.Charset
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.pool2.impl.GenericObjectPool
 import org.slf4j.Logger
@@ -15,25 +14,25 @@ class FTPService(@Autowired var pool: GenericObjectPool<FTPClient>) {
 
     val log: Logger = LoggerFactory.getLogger(FTPService::class.java)
 
-    fun upload(file: ByteArray, path: String, fileName: String): UploadStatus {
+    fun upload(
+            file: ByteArray?,
+            path: String,
+            fileName: String,
+            mkDir: Boolean = false
+    ): UploadStatus {
         var result: UploadStatus
         var ftpClient: FTPClient? = null
         try {
             ftpClient = pool.borrowObject()
-            if (!FTPUtils.isExist(ftpClient, path)) {
+            if (!FTPUtils.isExist(ftpClient, path) && mkDir && !FTPUtils.mkDir(ftpClient, path)) {
                 result = UploadStatus.DIRECTORY_NOT_EXIST
+                log.warn("${path} DIRECTORY_NOT_EXIST")
                 return result
             }
-            ftpClient.changeWorkingDirectory(path)
-            // https://blog.csdn.net/gingerredjade/article/details/62036205
-            // var encodeFileName: String =
-            //         String(
-            //                 fileName.toByteArray(Charset.forName(FTPUtils.LOCAL_CHARSET)),
-            //                 Charset.forName(FTPUtils.SERVER_CHARSET)
-            // )
-            log.info("before upload job have done!")
+            val changeRes = ftpClient.changeWorkingDirectory(path)
+            log.info("changeWorkingDirectory: ${path} ,status: ${changeRes}")
             result = FTPUtils.upload(ftpClient, file, fileName)
-            log.info("write file: ${fileName} done")
+            log.info("write file: ${fileName} done, path: ${path}")
         } catch (e: Exception) {
             log.error("upload error", e)
             result = UploadStatus.UNKNOWN_ERROR
@@ -41,5 +40,18 @@ class FTPService(@Autowired var pool: GenericObjectPool<FTPClient>) {
             ftpClient?.let { pool.returnObject(ftpClient) }
         }
         return result
+    }
+
+    fun mkDir(path: String) {
+        var ftpClient: FTPClient? = null
+        try {
+            ftpClient = pool.borrowObject()
+            val res = FTPUtils.mkDir(ftpClient, path)
+            log.info("mkDir ${path},  status: ${res}")
+        } catch (e: Exception) {
+            log.error("mkDir", e)
+        } finally {
+            ftpClient?.let { pool.returnObject(ftpClient) }
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.chenc.fuploads.utils
 
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
+import org.apache.commons.net.ftp.FTPReply
 import java.io.OutputStream
 import java.io.BufferedOutputStream
 import java.io.IOException
@@ -16,7 +17,7 @@ class FTPUtils {
         var LOCAL_CHARSET: String = "UTF-8"
         var SERVER_CHARSET: String = "ISO-8859-1"
 
-        fun upload(client: FTPClient, file: ByteArray, fileName: String): UploadStatus {
+        fun upload(client: FTPClient, file: ByteArray?, fileName: String): UploadStatus {
             var result: UploadStatus = UploadStatus.SUCCESS
             try {
                 var out = client.appendFileStream(fileName)
@@ -48,7 +49,17 @@ class FTPUtils {
             if (client.listFiles(path) == null) {
                 result = false
             }
+            result = client.changeWorkingDirectory(path)
+            if (!result) {
+                result = false
+            }
+            log.info("${path} is Exist ${result}")
             return result
+        }
+
+        fun mkDir(client: FTPClient, path: String) : Boolean {
+            log.info("create path ${path}")
+            return client.makeDirectory(path)
         }
         
     }

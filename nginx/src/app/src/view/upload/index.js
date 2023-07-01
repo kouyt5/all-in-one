@@ -18,8 +18,9 @@ class FileUpload extends Component {
                 }
                 if (status === 'done') {
                     var code = info.file.response?.code
+                    var mes = info.file.response?.message
                     if (code !== 200) {
-                        message.error(`${info.file.name} 文件上传失败., ${code}`);
+                        message.error(`${info.file.name} 文件上传失败., ${mes}`);
                     } else {
                         message.success(`${info.file.name} 文件上传成功.`);
                     }
@@ -47,7 +48,7 @@ class FileUpload extends Component {
                     </p>
                     <p className="ant-upload-text">点击或拖拽文件到此处上传</p>
                     <p className="ant-upload-hint">
-                        支持单个和多个文件同时上传
+                        支持单个和多个文件同时上传, 支持 zip、tar 格式在线解压浏览
                     </p>
                 </Dragger>
             </Content>

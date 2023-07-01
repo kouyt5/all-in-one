@@ -49,8 +49,8 @@ class FTPUtils {
             if (client.listFiles(path) == null) {
                 result = false
             }
-            result = client.changeWorkingDirectory(path)
-            if (!result) {
+            var changeStatus = client.changeWorkingDirectory(path)
+            if (!changeStatus) {
                 result = false
             }
             log.info("${path} is Exist ${result}")

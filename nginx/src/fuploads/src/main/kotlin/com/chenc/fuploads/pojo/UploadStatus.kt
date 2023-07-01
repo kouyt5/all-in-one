@@ -1,5 +1,8 @@
 package com.chenc.fuploads.pojo
 
+/**
+ * 上传状态枚举类
+ */
 enum class UploadStatus(val code: Int, val message: String) {
     SUCCESS(200, "OK"),
     UNKNOWN_ERROR(500, "未知错误"),

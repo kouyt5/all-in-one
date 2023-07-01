@@ -6,9 +6,15 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.CorsFilter
 
+/**
+ * 跨域配置
+ */
 @Configuration
 class CROSConfig {
 
+    /**
+     * 允许所有接口跨域
+     */
     @Bean
     fun corsFilter() : CorsFilter {
 

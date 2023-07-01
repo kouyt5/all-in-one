@@ -9,11 +9,17 @@ import org.slf4j.LoggerFactory
 import com.chenc.fuploads.pojo.BaseResponse
 import com.chenc.fuploads.pojo.ResponseStatus
 
+/**
+ * 全局异常抓取
+ */
 @RestControllerAdvice
 class ExceptionCatcher() {
 
     val log: Logger = LoggerFactory.getLogger(ExceptionCatcher::class.java)
 
+    /**
+     * 文件异常
+     */
     @ExceptionHandler(MultipartException::class)
     fun multipartException(e: MultipartException): BaseResponse<Any?> {
         log.error("multipartException: ", e)
@@ -24,6 +30,9 @@ class ExceptionCatcher() {
         }
     }
 
+    /**
+     * 传入参数错误
+     */
     @ExceptionHandler(MissingServletRequestPartException::class)
     fun missingReqPartException(e: MissingServletRequestPartException): BaseResponse<Any?> {
         log.error("missingReqPartException: ", e)
@@ -34,6 +43,9 @@ class ExceptionCatcher() {
         }
     }
 
+    /**
+     * 兜底异常
+     */
     @ExceptionHandler(Exception::class)
     fun exception(e: Exception): BaseResponse<Any?> {
         log.error("exception: ", e)

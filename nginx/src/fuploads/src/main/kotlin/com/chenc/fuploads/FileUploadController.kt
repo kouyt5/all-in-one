@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
-/** 文件上传接口 /api/uploads */
+/** 文件上传 Controller /api/  */
 @RequestMapping("/api")
 @RestController
 class FileUploadController {
@@ -25,6 +25,9 @@ class FileUploadController {
     @Autowired lateinit var ftpService: FTPService
     @Autowired lateinit var archiveService: ArchiveService
 
+    /**
+     * 文件上传接口 /api/uploads
+     */
     @RequestMapping("/uploads", method = arrayOf(RequestMethod.POST))
     fun uploads(
             @RequestParam("file") files: Array<MultipartFile>,
@@ -37,12 +40,13 @@ class FileUploadController {
 
         var time: Long = System.currentTimeMillis()
         for (file in files) {
-            var status = ftpService.upload(file.bytes, path, file.originalFilename ?: "unknown")
+            val fileName = file.originalFilename ?: "unknown"
+            val status = ftpService.upload(file.bytes, path, fileName)
             if (status == UploadStatus.SUCCESS) {
-                successFileList.add(file.originalFilename ?: "unknown")
+                successFileList.add(fileName)
                 extractFile(file, path)
             } else {
-                failedFileList.add(file.originalFilename ?: "unknown")
+                failedFileList.add(fileName)
             }
             result = status
         }
@@ -59,10 +63,16 @@ class FileUploadController {
         }
     }
 
+    /**
+     * 文件是否可以解压
+     */
     private fun supportExtractFormat(s: String): Boolean {
         return Regex(""".*zip$|.*tar$|.*7z$""").matches(s)
     }
 
+    /**
+     * 提取压缩文件
+     */
     private fun extractFile(file: MultipartFile, path: String): UploadStatus {
         var resExt: UploadStatus = UploadStatus.EXTRACT_NO_NEED
         if (!supportExtractFormat(file.originalFilename ?: "_")) {

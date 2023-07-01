@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 
+/**
+ * 请求拦截器
+ */
 @Component
 class RequestUrlInterceptor : HandlerInterceptor {
 
@@ -27,6 +30,9 @@ class RequestUrlInterceptor : HandlerInterceptor {
         return ip != null && ip.length != 0 && "unknown" != ip
     }
 
+    /**
+     * 获取真实的用户ip
+     */
     private fun getRealIP(request: HttpServletRequest): String? {
         var ip: String? = request.getHeader("x-forwarded-for")
 

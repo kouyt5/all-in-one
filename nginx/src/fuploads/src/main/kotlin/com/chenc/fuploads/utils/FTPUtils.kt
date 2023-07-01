@@ -11,12 +11,18 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 
+/**
+ * FTP 工具类
+ */
 class FTPUtils {
     companion object {
         val log: Logger = LoggerFactory.getLogger(FTPUtils::class.java)
         var LOCAL_CHARSET: String = "UTF-8"
         var SERVER_CHARSET: String = "ISO-8859-1"
 
+        /**
+         * 上传文件
+         */
         fun upload(client: FTPClient, file: ByteArray?, fileName: String): UploadStatus {
             var result: UploadStatus = UploadStatus.SUCCESS
             try {
@@ -44,6 +50,9 @@ class FTPUtils {
             return result
         }
 
+        /**
+         * 路径是否存在
+         */
         fun isExist(client: FTPClient, path: String) : Boolean {
             var result = true
             if (client.listFiles(path) == null) {
@@ -57,6 +66,9 @@ class FTPUtils {
             return result
         }
 
+        /**
+         * 创建文件夹
+         */
         fun mkDir(client: FTPClient, path: String) : Boolean {
             log.info("create path ${path}")
             return client.makeDirectory(path)

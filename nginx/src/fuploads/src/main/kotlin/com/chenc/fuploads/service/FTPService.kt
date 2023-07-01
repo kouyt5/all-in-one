@@ -18,6 +18,13 @@ class FTPService(@Autowired var pool: GenericObjectPool<FTPClient>) {
 
     val log: Logger = LoggerFactory.getLogger(FTPService::class.java)
 
+    /**
+     * 文件上传
+     * @param file 文件byte
+     * @param path 存在的ftp路径
+     * @param filename 文件名
+     * @param mkDir 是否创建文件夹
+     */
     fun upload(
             file: ByteArray?,
             path: String,
@@ -46,6 +53,9 @@ class FTPService(@Autowired var pool: GenericObjectPool<FTPClient>) {
         return result
     }
 
+    /**
+     * 在FTP上创建文件夹
+     */
     fun mkDir(path: String) {
         var ftpClient: FTPClient? = null
         try {

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 /**
- * 压缩文件提取Service
+ * 压缩文件 Service
  * @author kouyt5
  */
 @Service
@@ -18,6 +18,9 @@ class ArchiveService {
 
     val log: Logger = LoggerFactory.getLogger(ArchiveService::class.java)
 
+    /**
+     * 压缩文件提取
+     */
     fun extract(
             compressedFile: ByteArray,
             path: String,

@@ -30,6 +30,9 @@ class FTPConfig: GenericObjectPoolConfig<FTPClient>() {
     @Value("\${ftp.maxWait}") var maxWait: Int = 30000
     @Value("\${ftp.block}")  var block: Boolean = true
 
+    /**
+     * 创建对象池
+     */
     @Bean
     fun createPool(@Autowired factory: FTPFactory): GenericObjectPool<FTPClient> {
         return GenericObjectPool<FTPClient>(factory, this@FTPConfig)

@@ -63,16 +63,10 @@ class FileUploadController {
         }
     }
 
-    /**
-     * 文件是否可以解压
-     */
     private fun supportExtractFormat(s: String): Boolean {
         return Regex(""".*zip$|.*tar$|.*7z$""").matches(s)
     }
 
-    /**
-     * 提取压缩文件
-     */
     private fun extractFile(file: MultipartFile, path: String): UploadStatus {
         var resExt: UploadStatus = UploadStatus.EXTRACT_NO_NEED
         if (!supportExtractFormat(file.originalFilename ?: "_")) {

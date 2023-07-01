@@ -9,6 +9,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+/**
+ * FTP 文件上传服务
+ * @author kouyt5
+ */
 @Service
 class FTPService(@Autowired var pool: GenericObjectPool<FTPClient>) {
 

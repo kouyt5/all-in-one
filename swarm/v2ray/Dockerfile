@@ -1,4 +1,4 @@
-FROM v2fly/v2fly-core:latest
+FROM v2fly/v2fly-core:v4.45.2
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN echo 'Asia/Shanghai' >/etc/timezone

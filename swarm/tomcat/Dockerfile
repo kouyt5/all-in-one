@@ -1,4 +1,4 @@
-FROM tomcat:latest
+FROM tomcat:8.5.90-jre11
 
 COPY ./aisaps.war /usr/local/tomcat/webapps/
 

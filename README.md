@@ -3,11 +3,11 @@
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/kouyt5/all-in-one/di.yml?label=%E9%83%A8%E7%BD%B2)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/kouyt5/all-in-one/gradle.yml?label=%E6%8E%A5%E5%8F%A3)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/kouyt5/all-in-one/node.js.yml?label=%E9%A1%B5%E9%9D%A2)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1fe44958cf4546c38bcdc5aa7542ba13)](https://app.codacy.com/gh/kouyt5/all-in-one/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1fe44958cf4546c38bcdc5aa7542ba13)](https://app.codacy.com/gh/kouyt5/all-in-one/dashboard?utm_source=gh\&utm_medium=referral\&utm_content=\&utm_campaign=Badge_grade)
 
 基于 docker 封装的各种开源组件或服务，方便开箱即用。同时包含一个集成`文件浏览`、`code-server`、`Jupyter-Lab` 和`文件上传`的网页服务。
 
-## Q&A
+## Q\&A
 
 **项目目标 ?**
 
@@ -19,55 +19,52 @@
 
 项目的文件夹说明如下：
 
-```
-.
-├── app # 产生的永久文件
-├── lonely-app # 包含单个服务，单独在其文件夹下运行docker-compose up 启动
-├── nginx # 应用集成网关
-├── speedup # 加速源
-└── swarm # 一些swarm集群例子(deprecated)
-```
+    .
+    ├── app # 产生的永久文件
+    ├── lonely-app # 包含单个服务，单独在其文件夹下运行docker-compose up 启动
+    ├── nginx # 应用集成网关
+    ├── speedup # 加速源
+    └── swarm # 一些swarm集群例子(deprecated)
 
 ## 包含的服务：
 
-+ 经过 nginx 代理的服务：
-  + `jupyter lab` 一个专门用来科学计算的工具
-  + `nginx` 服务器 作为所有服务的代理
-  + `code-server` 一个网页上运行的 `vscode`
-  + 文件上传页面（react + SpringBoot(kotlin)）
+*   经过 nginx 代理的服务：
+    *   `jupyter lab` 一个专门用来科学计算的工具
+    *   `nginx` 服务器 作为所有服务的代理
+    *   `code-server` 一个网页上运行的 `vscode`
+    *   文件上传页面（react + SpringBoot(kotlin)）
 
-+ 单个服务，单独启动运行。在 📁 lonely/ 目录或者 swarm 下
-  + `ftp` 服务器，用于文件本地上传，再使用 `nginx` 作为文件查看服务器，这样做的原因是 http 可以直接在线查看 pdf ， ftp 不行。
-  + `v2ray` **代理**服务器设置（非 VPN ，翻墙需要预先有国外服务器或第三方服务，详情见 [swarm/v2ray/README.md](swarm/v2ray/README.md) ）
-  + `tomcat` 包括 `swarm` 下的集群配置
-  + `elasticsearch + Kibana + logstash` 环境搭建
-  + `cloudrev` 类似于百度云
-  + `mysql` mysql5.7 和 mysql8
-  + `rabbitmq` 消息队列服务
-  + `squid` http 代理服务器
-  + `frp` 反向代理，用作内网穿透
-  + `gitlab` 类似 GitHub 的代码托管网站
-  + `nginx-tomcat` nginx 和tomcat 的联合，nginx 用作网关
-  + `bitwarden` 个人密码管理
-  + `redis`
-  + `squid` 代理服务器
-  + `mqtt` mqtt 服务器，使用 mosquitto 作为权限模块
+*   单个服务，单独启动运行。在 📁 lonely/ 目录或者 swarm 下
+    *   `ftp` 服务器，用于文件本地上传，再使用 `nginx` 作为文件查看服务器，这样做的原因是 http 可以直接在线查看 pdf ， ftp 不行。
+    *   `v2ray` **代理**服务器设置（非 VPN ，翻墙需要预先有国外服务器或第三方服务，详情见 [swarm/v2ray/README.md](swarm/v2ray/README.md) ）
+    *   `tomcat` 包括 `swarm` 下的集群配置
+    *   `elasticsearch + Kibana + logstash` 环境搭建
+    *   `cloudrev` 类似于百度云
+    *   `mysql` mysql5.7 和 mysql8
+    *   `rabbitmq` 消息队列服务
+    *   `squid` http 代理服务器
+    *   `frp` 反向代理，用作内网穿透
+    *   `gitlab` 类似 GitHub 的代码托管网站
+    *   `nginx-tomcat` nginx 和tomcat 的联合，nginx 用作网关
+    *   `bitwarden` 个人密码管理
+    *   `redis`
+    *   `squid` 代理服务器
+    *   `mqtt` mqtt 服务器，使用 mosquitto 作为权限模块
 
 后续将会不断完善。
 
 ## 环境依赖
 
-+ `docker`
-+ `docker-compose`
+*   `docker`
+*   `docker-compose`
 
 这两个是基本的应用，安装官网链接： https://docs.docker.com/engine/install/ubuntu/
 
 ## 单个服务启动方法
 
 到 📁 lonely-app 目录下使用 `docker-compose up` 命令启动对应应用即可，例如到 `lonely-app/rabbitmq` 目录下输入：
-```
-docker-compose up -d
-```
+
+    docker-compose up -d
 
 即可搭建一个 rabbitmq 的开发环境。部分环境例如 ftp 可能会依赖于环境变量来设置密码，如果需要，请先命令行设置环境变量。
 
@@ -88,41 +85,39 @@ export CODE_SERVER_PASSWORD=password
 export FTP_PASS=password
 export PASV_ADDRESS=ip
 ```
+
 建议将其放在 `~/.bashrc` 文件的末尾
 
 ### 启动步骤
 
 **1️⃣**. 因为 nginx 默认开启 ssl 即 https ，因此需要自行根据需求，把 ssl 的关键文件放入 nginx 目录下，如
-```
-# 免费 ssl 证书申请 https://freessl.cn/
-nginx/ssl/
-├── full_chain.pem
-└── private.key
-```
+
+    # 免费 ssl 证书申请 https://freessl.cn/
+    nginx/ssl/
+    ├── full_chain.pem
+    └── private.key
+
 如果没有证书，注释掉 nginx/conf.d/default.conf 文件中关于ssl的部分。
 
 示例如下:
 
-```
-server {
-    listen        8080;
-    server_name xxxx.com;
-    # ssl_certificate /ssl/full_chain.crt; #证书路径
-    # ssl_certificate_key /ssl/private.key; #key路径
-    auth_basic  on;
-    charset utf-8;
-    underscores_in_headers on; # 默认的情况下nginx引用header变量时不能使用带下划线的变量。需要配置underscores_in_headers on
-    ...
-```
+    server {
+        listen        8080;
+        server_name xxxx.com;
+        # ssl_certificate /ssl/full_chain.crt; #证书路径
+        # ssl_certificate_key /ssl/private.key; #key路径
+        auth_basic  on;
+        charset utf-8;
+        underscores_in_headers on; # 默认的情况下nginx引用header变量时不能使用带下划线的变量。需要配置underscores_in_headers on
+        ...
 
 **2️⃣**. jupyter 还需要额外配置密码，jupyter 的密码配置在 📁 jupyter/Dockerfile 中，具体请看 jupyter 目录下的 [jupyter/README.md](/lonely-app/jupyter/README.md) 文件。
-
 
 **3️⃣**. 进入项目根目录，输入 `docker-compose up --build` 就可以直接启动nginx关联服务（包括jupyter、jupyterlab、nginx）
 
 **4️⃣** 然后打开浏览器，输入 `http://ip/` 就可以访问到主页✅
 
->**⚠️** **nginx默认监听80端口，所以请确保80端口对外开放。**
+> **⚠️** **nginx默认监听80端口，所以请确保80端口对外开放。**
 
 #### 项目网页打包原理
 
@@ -132,6 +127,6 @@ server {
 
 ## last
 
-+ docker 不是万能的，要考虑到容器技术的发展，不少应用不太好迁移到 docker 中去，使用 docker 之前最好就要考虑到代码将在 docker 运行，这样构建的应用或服务才能充分利用 docker 带来的便利。
-+ docker 的特性使得不太适合 mysql 这种需要持久化的应用， docker 的服务最好是无状态的那种。
-+ 迁移到 docker 这个过程带来的时间成本可能比你想象中的要多，但是同时这样做带来的便利真如你想象的那样。
+*   docker 不是万能的，要考虑到容器技术的发展，不少应用不太好迁移到 docker 中去，使用 docker 之前最好就要考虑到代码将在 docker 运行，这样构建的应用或服务才能充分利用 docker 带来的便利。
+*   docker 的特性使得不太适合 mysql 这种需要持久化的应用， docker 的服务最好是无状态的那种。
+*   迁移到 docker 这个过程带来的时间成本可能比你想象中的要多，但是同时这样做带来的便利真如你想象的那样。

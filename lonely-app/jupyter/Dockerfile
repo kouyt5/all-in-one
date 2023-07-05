@@ -1,4 +1,4 @@
-FROM jupyter/datascience-notebook
+FROM jupyter/datascience-notebook:2023-06-03
 ENV NB_PREFIX=/jupyter/
 
 USER root

@@ -9,12 +9,13 @@
 ## 搭建方法
 
 使用 [googlehelper](http://googlehelper.net/)提供的手机代理工具实现国外网站的访问。 ghelper 本是一个浏览器代理工具，但是提供了 v2ray 订阅链接，为有 GUI 的操作系统包括手机、Linux系统、 windows 系统提供 vpn 支持，使用的第三方工具有 v2rayN、v2rayL 就可以使用这个链接。这个链接需要解析，原生的 v2ray 中似乎没发现解析的方法，因此借助第三方工具 v2rayN ,windows 下的图形化软件获取到配置信息。
-1. 首先将订阅链接导入到 v2rayN 中
-2. 去 v2rayN 的安装目录下，找到 `config.json` 文件，这个文件就是 v2ray 能够识别的文件
-3. 在 `docker-compose.yml` 文件中修改端口号
-4. 构建镜像 docker build -t v2ray_localbuild:v0.1 .
-5. 替换掉这个目录的 config.json 文件，启动 `docker-compose -f docker-compose-reg.yaml up` 就成功搭建了一个 docker 代理，注意 yaml 文件中的 config 文件
-6. 如果想整点儿花里胡哨的，`docker stack deploy -c docker-compose.yml v2ray` 使用 swarm 启动一个docker 集群
+
+1.  首先将订阅链接导入到 v2rayN 中
+2.  去 v2rayN 的安装目录下，找到 `config.json` 文件，这个文件就是 v2ray 能够识别的文件
+3.  在 `docker-compose.yml` 文件中修改端口号
+4.  构建镜像 docker build -t v2ray\_localbuild:v0.1 .
+5.  替换掉这个目录的 config.json 文件，启动 `docker-compose -f docker-compose-reg.yaml up` 就成功搭建了一个 docker 代理，注意 yaml 文件中的 config 文件
+6.  如果想整点儿花里胡哨的，`docker stack deploy -c docker-compose.yml v2ray` 使用 swarm 启动一个docker 集群
 
 ## 配置文件解析
 
@@ -26,24 +27,21 @@
 
 ## json 配置文件
 
-```
-.
-├── config-aws.json # AWS 云代理配置文件，目前部署失败，估计是由于墙的原因导致，因为使用 http 代理，未加密
-├── config-cn2-usa.json # 翻墙代理配置文件
-├── config-cn.json # 国内自建服务器代理配置文件，用于搭建校园代理
-├── config.json # 翻墙代理配置文件
-├── docker-compose-cn.yaml # 国内自建服务器代理搭建 docker-compose 启动文件
-├── docker-compose-reg.yaml # 翻墙 docker-compose 启动文件
-├── docker-compose.yml # 翻墙的 docker swarm 部署，但部署总会一段时间后失效，猜测是由于翻墙服务器拒绝访问导致的，因为长时间周期性的 `healthy check`
-```
+    .
+    ├── config-aws.json # AWS 云代理配置文件，目前部署失败，估计是由于墙的原因导致，因为使用 http 代理，未加密
+    ├── config-cn2-usa.json # 翻墙代理配置文件
+    ├── config-cn.json # 国内自建服务器代理配置文件，用于搭建校园代理
+    ├── config.json # 翻墙代理配置文件
+    ├── docker-compose-cn.yaml # 国内自建服务器代理搭建 docker-compose 启动文件
+    ├── docker-compose-reg.yaml # 翻墙 docker-compose 启动文件
+    ├── docker-compose.yml # 翻墙的 docker swarm 部署，但部署总会一段时间后失效，猜测是由于翻墙服务器拒绝访问导致的，因为长时间周期性的 `healthy check`
 
 # 问题以及解决方法
 
 git 设置代理 push 的时候报错：
-```
-fatal: unable to access 'https://github.com/kouyt5/all-in-one.git/': Proxy CONNECT aborted
-```
+
+    fatal: unable to access 'https://github.com/kouyt5/all-in-one.git/': Proxy CONNECT aborted
+
 试了很多方法都不行，比如换成 `git config` 配置，查了很久，问题是因为代理使用了认证导致的，需要 git 里设置一下：
-```
-git config --global http.proxyAuthMethod 'basic'
-```
+
+    git config --global http.proxyAuthMethod 'basic'

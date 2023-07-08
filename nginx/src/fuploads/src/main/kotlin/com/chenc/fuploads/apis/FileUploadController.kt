@@ -1,11 +1,10 @@
 package com.chenc.fuploads.apis
 
+import com.chenc.fuploads.apis.helper.FileUploadHelper
 import com.chenc.fuploads.pojo.BaseResponse
 import com.chenc.fuploads.pojo.UploadFileResponse
-import com.chenc.fuploads.pojo.UploadStatus
 import com.chenc.fuploads.service.ArchiveService
 import com.chenc.fuploads.service.FTPService
-import com.chenc.fuploads.apis.helper.FileUploadHelper
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,24 +31,19 @@ class FileUploadController {
             @RequestParam("path", required = false, defaultValue = "/test/tmp/") path: String
     ): BaseResponse<UploadFileResponse> {
         log.info("uploads file count: ${files.size}")
-        
-        var successFileList = ArrayList<String>()
-        var failedFileList = ArrayList<String>()
 
-        var result: UploadStatus =
+        var (result, data) =
                 FileUploadHelper.uploads_and_extract(
                         ftpService,
                         archiveService,
                         files,
                         path,
-                        successFileList,
-                        failedFileList
                 )
 
         return BaseResponse.build {
             code = result.code
             message = result.message
-            data = UploadFileResponse(successFileList, failedFileList)
+            data = data
         }
     }
 }

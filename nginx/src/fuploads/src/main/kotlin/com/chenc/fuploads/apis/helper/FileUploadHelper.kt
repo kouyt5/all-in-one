@@ -1,5 +1,6 @@
 package com.chenc.fuploads.apis.helper
 
+import com.chenc.fuploads.pojo.UploadFileResponse
 import com.chenc.fuploads.pojo.UploadStatus
 import com.chenc.fuploads.service.ArchiveService
 import com.chenc.fuploads.service.FTPService
@@ -8,26 +9,23 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.web.multipart.MultipartFile
 
-/**
- * FileUploadController 辅助类
- */
+/** FileUploadController 辅助类 */
 class FileUploadHelper {
     companion object {
 
         val log: Logger = LoggerFactory.getLogger(FileUploadHelper::class.java)
 
-        /**
-         * 上传文件并提取压缩文件
-         */
+        /** 上传文件并提取压缩文件 */
         fun uploads_and_extract(
                 ftpService: FTPService,
                 archiveService: ArchiveService,
                 files: Array<MultipartFile>,
                 path: String,
-                successFileList: ArrayList<String>,
-                failedFileList: ArrayList<String>,
-        ): UploadStatus {
+        ): Pair<UploadStatus, UploadFileResponse> {
             var result: UploadStatus = UploadStatus.SUCCESS
+            var successFileList = ArrayList<String>()
+            var failedFileList = ArrayList<String>()
+
             for (file in files) {
                 val fileName = file.originalFilename ?: "unknown"
                 var time: Long = System.currentTimeMillis()
@@ -41,13 +39,13 @@ class FileUploadHelper {
                 }
                 result = status
             }
-            
+
             if (files.size > 1) {
                 if (failedFileList.size > 0) {
                     result = UploadStatus.MULTIFILE_ERROR
                 }
             }
-            return result
+            return Pair(result, UploadFileResponse(successFileList, failedFileList))
         }
 
         private fun extractFile(
@@ -62,9 +60,7 @@ class FileUploadHelper {
                 return resExt
             }
             val extractTo =
-                    Path(path, filename)
-                            .toString()
-                            .replace(Regex("""\.zip$|\.tar$|\.7z$"""), "")
+                    Path(path, filename).toString().replace(Regex("""\.zip$|\.tar$|\.7z$"""), "")
             log.info("extractTo: ${extractTo}")
             var time: Long = System.currentTimeMillis()
             ftpService.mkDir(extractTo)

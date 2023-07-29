@@ -30,7 +30,7 @@ class FTPFactory : PooledObjectFactory<FTPClient> {
         try {
             ftpClient.connect(config.host, config.port)
             ftpClient.login(config.username, config.password)
-            ftpClient.setControlEncoding(FTPUtils.LOCAL_CHARSET)
+            ftpClient.controlEncoding = FTPUtils.LOCAL_CHARSET
             // ftpClient.changeWorkingDirectory(config.defaultPath) // IOExcep
             // 设置上传文件类型为二进制，否则将无法打开文件
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE) // IOExcep
@@ -73,8 +73,8 @@ class FTPFactory : PooledObjectFactory<FTPClient> {
             }
             // 0=ASCII_FILE_TYPE(ASCII格式)，1=EBCDIC_FILE_TYPE，2=LOCAL_FILE_TYPE(二进制文件)
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE)
-            ftpClient.setBufferSize(config.bufferSize)
-            ftpClient.setControlEncoding(FTPUtils.LOCAL_CHARSET)
+            ftpClient.bufferSize = config.bufferSize
+            ftpClient.controlEncoding = FTPUtils.LOCAL_CHARSET
             
         } catch (e: IOException) {
             log.error("makeObject failed: ", e)

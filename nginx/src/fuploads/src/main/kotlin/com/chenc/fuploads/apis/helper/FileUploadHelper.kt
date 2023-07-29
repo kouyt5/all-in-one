@@ -61,13 +61,13 @@ class FileUploadHelper {
             }
             val extractTo =
                     Path(path, filename).toString().replace(Regex("""\.zip$|\.tar$|\.7z$"""), "")
-            log.info("extractTo: ${extractTo}")
+            log.info("extractTo: $extractTo")
             var time: Long = System.currentTimeMillis()
             ftpService.mkDir(extractTo)
             resExt =
-                    archiveService.extract(file.bytes, extractTo) { fileByte, relPath, isDictory ->
+                    archiveService.extract(file.bytes, extractTo) { fileByte, relPath, isDirectory ->
                         var res = UploadStatus.SUCCESS
-                        if (isDictory) {
+                        if (isDirectory) {
                             ftpService.mkDir(relPath)
                         } else {
                             val fileName = Path(relPath).fileName.toString()

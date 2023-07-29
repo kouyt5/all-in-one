@@ -27,7 +27,7 @@ class RequestUrlInterceptor : HandlerInterceptor {
     }
 
     private fun ipValid(ip: String?): Boolean {
-        return ip != null && ip.length != 0 && "unknown" != ip
+        return ip != null && ip.isNotEmpty() && "unknown" != ip
     }
 
     /**
@@ -58,7 +58,7 @@ class RequestUrlInterceptor : HandlerInterceptor {
             ip = request.getHeader("X-Real-IP")
         }
         if (!ipValid(ip)) {
-            ip = request.getRemoteAddr()
+            ip = request.remoteAddr
         }
         return ip
     }

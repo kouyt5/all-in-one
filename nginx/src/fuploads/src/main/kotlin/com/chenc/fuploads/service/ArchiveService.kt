@@ -24,12 +24,12 @@ class ArchiveService {
     fun extract(
             compressedFile: ByteArray,
             path: String,
-            callback: (file: ByteArray?, path: String, isDictory: Boolean) -> UploadStatus
+            callback: (file: ByteArray?, path: String, isDirectory: Boolean) -> UploadStatus
     ): UploadStatus {
         var result: UploadStatus = UploadStatus.SUCCESS
         var byteInputStream = ByteArrayInputStream(compressedFile)
         val i = ArchiveStreamFactory().createArchiveInputStream(byteInputStream)
-        var entry: ArchiveEntry? = i.getNextEntry()
+        var entry: ArchiveEntry? = i.nextEntry
         while (entry != null) {
             if (!i.canReadEntryData(entry)) {
                 log.error("cannot ReadEntryData")
@@ -47,7 +47,7 @@ class ArchiveService {
                 log.warn("extract to ftp error: path=${fileRelPath}")
                 return result
             }
-            entry = i.getNextEntry()
+            entry = i.nextEntry
         }
         return result
     }

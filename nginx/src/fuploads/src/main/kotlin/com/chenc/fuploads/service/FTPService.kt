@@ -22,7 +22,7 @@ class FTPService(@Autowired var pool: GenericObjectPool<FTPClient>) {
      * 文件上传
      * @param file 文件byte
      * @param path 存在的ftp路径
-     * @param filename 文件名
+     * @param fileName 文件名
      * @param mkDir 是否创建文件夹
      */
     fun upload(

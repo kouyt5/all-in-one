@@ -1,3 +1,15 @@
+server:
+  port: 8080
+  tomcat:
+    threads:
+      max: 12
+      min-spare: 2
 spring:
-  profiles:
-    active: dev
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      file-size-threshold: 0
+      location: /data/uploads/.tmp
+upload:
+  root: ${UPLOAD_ROOT:./app/uploads}

@@ -1,24 +1,3 @@
-# all-in-one 主页
+# 首页
 
-start:
-```
-npm install
-```
-
-开发: 
-```
-npm start
-```
-
-构建:
-```
-npm run build
-```
-
-部署到模拟服务器:
-
-```
-# npm install -g serve
-# sudo snap install serve
-serve -s build
-```
+需要 Node.js 24。运行 `npm ci`，`npm start` 启动开发环境，`npm test` 测试，`npm run build` 打包到 build/。API 默认代理到本机 8080 端口。

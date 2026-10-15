@@ -1,75 +1,86 @@
-version: '2'
+name: all-in-one
 services:
   nginx:
-   container_name: my-nginx
-   build: nginx/
-   restart: always
-   ports:
-    - 80:80
-    - 443:443
-    - 4433:443
-   volumes:
-   - ./nginx/conf.d:/etc/nginx/conf.d
-   - ./nginx/ssl:/ssl # 挂载ssl证书
-  #  - ./nginx/web/:/home/www/web/
-   - ./nginx/web/404:/home/404
-   - ./app/www/files:/home/www/files # 挂载的时候注意先赋予本地挂载目录777权限
-   - ./lonely-app/ftp/workdir/ftp:/home/www/files/win-ftp # 挂载ftp目录
-   links: 
-    - code-server:code-server_v1
-    - jupyter:jupyter_v1
-    # - portainer:portainer_v1
-    - api_server:api_server_v1
-  code-server:
-    restart: always
-    # image: codercom/code-server:3.2.0
-    build: ./lonely-app/code-server/
+    build:
+      context: ./nginx
+      args:
+        VITE_ENABLE_CODE_SERVER: ${CODE_SERVER_ENABLED:-false}
+    restart: unless-stopped
+    ports:
+      - "${HTTP_BIND:-0.0.0.0}:${HTTP_PORT:-80}:80"
+      - "${HTTP_BIND:-0.0.0.0}:${HTTPS_PORT:-443}:443"
     volumes:
-      - ./app/code-server:/home/coder/project
-      - ./speedup/apt-debain10.list:/etc/apt/sources.list
-      - ./speedup/pip.conf:/root/.pip/pip.conf # 镜像源加速
-      - db_code-server:/root/.local/share/code-server
-      - python_package:/usr/local/lib/python3.7/dist-packages
-      - ./lonely-app/code-server/setting.xml:/usr/local/apache-maven-3.6.3/conf/settings.xml
-    environment: 
-      - PASSWORD=${CODE_SERVER_PASSWORD} # code-server登录密码
-    user: root
-    links: 
-    - jupyter:jupyter_v1
-    ports: 
-     - 11400:11400
-     - 11401:11401
-  jupyter:
-    build: ./lonely-app/jupyter/
-    restart: always
-    volumes: 
-      - ./app/juypter/workdir:/workdir
-      - db_jupyter:/opt/conda/share/jupyter/lab # Application directory, 命令:jupyter lab path
-      - ./app/juypter/lab:/home/jovyan/.jupyter/lab # User Settings directory
-      - ./speedup/pip.conf:/home/jovyan/.pip/pip.conf # 镜像源加速
-    user: root
-    # ports: 
-    #   - 8889:8888
-  # portainer:
-  #   image: portainer/portainer
-  #   command: -H unix:///var/run/docker.sock
-  #   restart: always
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - portainer_data:/data
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - uploads:/home/www/files:ro
+    secrets:
+      - upload_htpasswd
+      - tls_cert
+      - tls_key
+    depends_on:
+      api_server:
+        condition: service_healthy
+    mem_limit: 96m
+    cpus: 0.5
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, http://127.0.0.1/healthz]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    logging: &logging
+      driver: json-file
+      options: {max-size: 10m, max-file: "3"}
   api_server:
-    build: ./nginx/src/fuploads/
-    restart: always
-    # environment: 
-    #   - FTP_PASS=${PASV_ADDRESS} # code-server登录密码
-    command: --spring.profiles.active=prod --ftp.password=${FTP_PASS} \
-            --spring.datasource.password=${MYSQL_PASS}
-    network_mode: "host"
+    build: ./nginx/src/fuploads
+    restart: unless-stopped
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms64m -Xmx192m -XX:MaxDirectMemorySize=32m -XX:MaxMetaspaceSize=128m -XX:+ExitOnOutOfMemoryError
+      UPLOAD_ROOT: /data/uploads
     volumes:
-      - ./nginx/src/fuploads/logs:/logs
-volumes: 
-  db_code-server: {}
-  db_jupyter: {}
-  portainer_data: {}
-  bw-data: {}
-  python_package: {}
+      - uploads:/data/uploads
+    mem_limit: 448m
+    cpus: 1.0
+    security_opt: [no-new-privileges:true]
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    healthcheck:
+      test: [CMD, curl, -fsS, http://127.0.0.1:8080/api/health]
+      interval: 15s
+      timeout: 5s
+      start_period: 60s
+      retries: 5
+    logging: *logging
+  code-server:
+    image: ghcr.io/coder/code-server:4.141.0@sha256:72ab24b5680ee597dd647b30d82625752f40109b5f61bef90ffbf1ea1f02dbb8
+    profiles: [ide]
+    healthcheck:
+      test: [CMD, curl, -fsS, -o, /dev/null, http://127.0.0.1:8080/login]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+    init: true
+    restart: unless-stopped
+    ports: ["127.0.0.1:8081:8080"]
+    volumes:
+      - code_home:/home/coder
+    secrets: [code_password]
+    entrypoint: [/bin/sh, -ec]
+    command: ['mkdir -p /home/coder/project; export PASSWORD="$$(cat /run/secrets/code_password)"; exec /usr/bin/entrypoint.sh --bind-addr 0.0.0.0:8080 /home/coder/project']
+    mem_limit: 512m
+    cpus: 1.0
+    security_opt: [no-new-privileges:true]
+    logging: *logging
+volumes:
+  uploads:
+  code_home:
+secrets:
+  upload_htpasswd:
+    file: ./.secrets/upload.htpasswd
+  code_password:
+    file: ./.secrets/code_password
+  tls_cert:
+    file: ./.secrets/server.crt
+  tls_key:
+    file: ./.secrets/server.key

@@ -1,0 +1,52 @@
+{
+  "log": {
+    "level": "warn",
+    "timestamp": true
+  },
+  "inbounds": [
+    {
+      "type": "socks",
+      "tag": "socks-in",
+      "listen": "0.0.0.0",
+      "listen_port": 1080
+    },
+    {
+      "type": "http",
+      "tag": "http-in",
+      "listen": "0.0.0.0",
+      "listen_port": 1087,
+      "users": [
+        {
+          "username": "proxy-user",
+          "password": "CHANGE_ME"
+        }
+      ]
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "tuic",
+      "tag": "proxy",
+      "server": "proxy.example.com",
+      "server_port": 443,
+      "uuid": "00000000-0000-4000-8000-000000000000",
+      "password": "CHANGE_ME",
+      "congestion_control": "bbr",
+      "tls": {
+        "enabled": true,
+        "server_name": "proxy.example.com",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    }
+  ],
+  "route": {
+    "final": "proxy"
+  }
+}

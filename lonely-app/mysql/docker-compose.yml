@@ -7,7 +7,7 @@ services:
     # - ./sql/db.sql:/docker-entrypoint-initdb.d/db.sql
     - mysql8-data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD}
     ports:
     - 3306:3306
     restart: always
@@ -19,11 +19,11 @@ services:
     # - ./sql/db.sql:/docker-entrypoint-initdb.d/db.sql
     - mysql5-data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD}
     ports:
     - 3305:3306
     restart: always
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 volumes:
-    mysql8-data: {}  
-    mysql5-data: {} 
+    mysql8-data: {}
+    mysql5-data: {}

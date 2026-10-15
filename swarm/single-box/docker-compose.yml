@@ -1,0 +1,21 @@
+name: single-box
+services:
+  sing-box:
+    image: ghcr.io/sagernet/sing-box:1.14.3@sha256:80c639ba467885b28511fb7c980565c2d30a8752f778e7bc8abdbc91fbfd95ec
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ../../.secrets/sing-box/config.json
+        target: /etc/sing-box/config.json
+        read_only: true
+        bind:
+          create_host_path: false
+    ports:
+      - "127.0.0.1:11400:1080"
+      - "127.0.0.1:11401:1087"
+    command: [run, -c, /etc/sing-box/config.json]
+    cpus: 2.0
+    mem_limit: 200m
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: "3"}

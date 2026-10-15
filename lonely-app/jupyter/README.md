@@ -28,7 +28,7 @@ CMD ["sh","-c", "jupyter notebook --ip=0.0.0.0 --no-browser --allow-root --port=
 $ cat /home/jovyan/.jupyter/jupyter_notebook_config.json
 {
   "NotebookApp": {
-    "password": "sha1:8afe621e8f22:51015a88aadb5a9802be3aaa8425e797fccb8666"
+    "password": "<YOUR_PASSWORD_HASH>"
   }
 ```
 
@@ -36,7 +36,7 @@ $ cat /home/jovyan/.jupyter/jupyter_notebook_config.json
 
 ```bash
 CMD ["sh","-c", "jupyter notebook --ip=0.0.0.0 --no-browser --allow-root --port=8888 \
- --NotebookApp.password='sha1:8afe621e8f22:51015a88aadb5a9802be3aaa8425e797fccb8666' \
+ --NotebookApp.password='<YOUR_PASSWORD_HASH>' \
   --NotebookApp.allow_origin='*' \
  --notebook-dir=/workdir --NotebookApp.base_url=${NB_PREFIX}"]
 ```
@@ -44,3 +44,6 @@ CMD ["sh","-c", "jupyter notebook --ip=0.0.0.0 --no-browser --allow-root --port=
 然后输入明文密码就可以登录了。
 
 ![继承关系](http://interactive.blockdiag.com/image?compression=deflate\&encoding=base64\&src=eJyFzTEPgjAQhuHdX9Gws5sQjGzujsaYKxzmQrlr2msMGv-71K0srO_3XGud9NNA8DSfgzESCFlBSdi0xkvQAKTNugw4QnL6GIU10hvX-Zh7Z24OLLq2SjaxpvP10lX35vCf6pOxELFmUbQiUz4oQhYzMc3gCrRt2cWe_FKosmSjyFHC6OS1AwdQWCtyj7sfh523_BI9hKlQ25YdOFdv5fcH0kiEMA)
+
+
+部署时通过环境变量 `JUPYTER_PASSWORD_HASH` 传入密码哈希；Dockerfile 不再内置固定哈希。请勿提交生成的哈希。

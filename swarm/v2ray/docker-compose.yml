@@ -1,27 +1,21 @@
-version: '3.8'
+name: v2ray
 services:
-    v2ray:
-        # image: v2fly/v2fly-core # build from Dockerfile
-        build: .
-        volumes:
-            - ./config.json:/etc/v2ray/config.json
-            - ./log:/log
-        ports: # 端口较小时需要用引号，不然无效
-            - "1080:1080"  # socket port
-            - "1087:1087"  # http port
-        environment: 
-            http_proxy: "http://user:password@127.0.0.1:1087"
-            https_proxy: "http://user:password@127.0.0.1:1087"
-        restart: always
-        command: ["run", "-c", "/etc/v2ray/config.json"]
-        deploy:
-            resources: 
-                limits:
-                    cpus: '2'
-                    memory: 200M
-        healthcheck:
-            test: curl --silent --connect-timeout 10 http://www.google.com||exit 1
-            interval: 60s
-            timeout: 10s
-            retries: 10
-# docker stack deploy -c docker-compose.yml v2ray
+  v2ray:
+    image: v2fly/v2fly-core:v5.41.0@sha256:d06727b221fe8cbaed2dd1d23f9d8270cb6581dc1c2c2949bd4d04d4c332eee3
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ../../.secrets/v2ray/config.json
+        target: /etc/v2ray/config.json
+        read_only: true
+        bind:
+          create_host_path: false
+    ports:
+      - "127.0.0.1:${V2RAY_SOCKS_PORT:-12400}:1080"
+      - "127.0.0.1:${V2RAY_HTTP_PORT:-12401}:1087"
+    command: [run, -c, /etc/v2ray/config.json]
+    cpus: 1.0
+    mem_limit: 200m
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: "3"}

@@ -9,6 +9,7 @@ test('homepage only links to code-server and includes its icon', () => {
   render(<App />);
   expect(screen.getByRole('link', { name: '打开 Code Server' })).toHaveAttribute('href', '/code/');
   expect(screen.getAllByRole('link')).toHaveLength(1);
+  expect(screen.getByText('kouyt5的个人小站')).toBeInTheDocument();
   expect(screen.getByRole('img', { name: 'Code Server 图标' })).toHaveAttribute('src', '/code-server.png');
   expect(screen.queryByText('File Browser')).not.toBeInTheDocument();
   expect(screen.queryByText('File Uploader')).not.toBeInTheDocument();

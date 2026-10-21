@@ -33,7 +33,7 @@ function App() {
       </Content>
 
       <Footer className='App-footer'>
-        <span>CC · 在线开发</span>
+        <span>kouyt5的个人小站</span>
       </Footer>
     </div>
   );

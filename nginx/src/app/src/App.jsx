@@ -34,6 +34,9 @@ function App() {
 
       <Footer className='App-footer'>
         <span>kouyt5的个人小站</span>
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">
+          ICP备案号：xxx
+        </a>
       </Footer>
     </div>
   );

@@ -15,40 +15,40 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={'' + '/avtor.jpg'} className="App-logo" alt="logo" />
+        <img src="/avtor.jpg" className="App-logo" alt="logo" />
       </header>
 
       <Content className='App-content'>
-        {import.meta.env.VITE_ENABLE_CODE_SERVER === 'true' && (
-          <Card hoverable className='App-link' onClick={() => window.location.href = '/code/'}>
-            <Meta title="Code Server" description="在线开发环境" />
+        <a href="/files/" aria-label="打开 File Browser">
+          <Card hoverable className='App-link'
+            cover={<img alt="File Browser 图标" src="/file.svg" className='Item-Img' />}>
+            <Meta title="File Browser" description="文件浏览与下载" />
           </Card>
+        </a>
+        <a href="/upload/#/file-upload/" aria-label="打开 File Uploader">
+          <Card hoverable className='App-link'
+            cover={<img alt="File Uploader 图标" src="/upload.svg" className='Item-Img' />}>
+            <Meta title="File Uploader" description="上传共享文件" />
+          </Card>
+        </a>
+        {import.meta.env.VITE_ENABLE_CODE_SERVER === 'true' && (
+          <a href="/code/" aria-label="打开 Code Server">
+            <Card
+              hoverable
+              className='App-link'
+              cover={<img alt="Code Server 图标" src="/code-server.png" className='Item-Img' />}
+            >
+              <Meta title="Code Server" description="在线开发环境" />
+            </Card>
+          </a>
         )}
-        <Card
-          hoverable
-          className='App-link'
-          cover={<img alt="example" src={'' + '/file.svg'} className='Item-Img' />}
-          onClick={() =>
-            window.location.href = '' + "/files/"
-          }
-        >
-          <Meta title="File Browser" description="文件浏览服务器, 用于共享文件下载" size='small' />
-        </Card>
-
-        <Card
-          hoverable
-          className='App-link'
-          cover={<img alt="example" src={'' + '/upload.svg'} className='Item-Img' />}
-          onClick={() =>
-            window.location.href = "/upload/#/file-upload/"
-          }
-        >
-          <Meta title="File Uploader" description="用于上传共享文件" size='small' />
-        </Card>
       </Content>
 
       <Footer className='App-footer'>
-        <span>CC · 文件共享</span>
+        <span>kouyt5的个人小站</span>
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">
+          蜀ICP备202606064116号
+        </a>
       </Footer>
     </div>
   );

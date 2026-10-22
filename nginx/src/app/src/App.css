@@ -49,10 +49,14 @@
   bottom: 0;
   position: fixed;
   text-align: center;
-  padding-bottom: 5vh;
-  height: 3vh;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   width: 100%;
-  font-size: x-small;
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 @keyframes App-logo-spin {
@@ -62,4 +66,13 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.App-footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.App-footer a:hover {
+  text-decoration: underline;
 }

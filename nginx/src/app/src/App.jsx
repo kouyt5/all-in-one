@@ -19,6 +19,18 @@ function App() {
       </header>
 
       <Content className='App-content'>
+        <a href="/files/" aria-label="打开 File Browser">
+          <Card hoverable className='App-link'
+            cover={<img alt="File Browser 图标" src="/file.svg" className='Item-Img' />}>
+            <Meta title="File Browser" description="文件浏览与下载" />
+          </Card>
+        </a>
+        <a href="/upload/#/file-upload/" aria-label="打开 File Uploader">
+          <Card hoverable className='App-link'
+            cover={<img alt="File Uploader 图标" src="/upload.svg" className='Item-Img' />}>
+            <Meta title="File Uploader" description="上传共享文件" />
+          </Card>
+        </a>
         {import.meta.env.VITE_ENABLE_CODE_SERVER === 'true' && (
           <a href="/code/" aria-label="打开 Code Server">
             <Card
@@ -35,7 +47,7 @@ function App() {
       <Footer className='App-footer'>
         <span>kouyt5的个人小站</span>
         <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">
-          ICP备案号：xxx
+          ICP备案号：2026064116
         </a>
       </Footer>
     </div>

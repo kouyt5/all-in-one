@@ -27,7 +27,7 @@ test('disabled code-server is not advertised', () => {
 
 test('footer includes the configured ICP filing link', () => {
   render(<App />);
-  const filing = screen.getByRole('link', { name: 'ICP备案号：2026064116' });
+  const filing = screen.getByRole('link', { name: '蜀ICP备202606064116号' });
   expect(filing).toHaveAttribute('href', 'https://beian.miit.gov.cn/');
   expect(filing).toHaveAttribute('target', '_blank');
   expect(filing).toHaveAttribute('rel', 'noopener noreferrer');

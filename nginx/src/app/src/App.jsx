@@ -47,7 +47,7 @@ function App() {
       <Footer className='App-footer'>
         <span>kouyt5的个人小站</span>
         <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">
-          ICP备案号：2026064116
+          蜀ICP备202606064116号
         </a>
       </Footer>
     </div>
